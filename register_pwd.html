@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	.mui-content-padded {
+			margin-top: 25px;
+		} 
+    </style>
+</head>
+<body>
+<header class="mybar2 mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">完善信息</h1>
+</header>
+<div class="mui-content">
+	<div class="mui-content-padded">
+		<div class="mui-input-row">
+			<input id='nickname' type="text" class="mui-input-clear" placeholder="昵称" >
+		</div>
+		<div class="mui-input-row">
+			<input id='password' type="password" class="mui-input-clear" placeholder="登录密码" >
+		</div>
+		<div class="mui-input-row">
+			<input id='repassword' type="password" class="mui-input-clear" placeholder="确认密码" >
+		</div>
+		<button id='btn_submit' class="mui-btn mui-btn-block my-btn-cyan">提交</button>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/api.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="UTF-8">
+  	mui.init();
+  	mui.plusReady(function(){
+		var state = App.getState();
+		if(state.userId){
+			plus.webview.close('register','slide-out-bottom',600);//关闭上一个页面
+			var userId = state.userId;
+			
+			var submitBtn = document.getElementById('btn_submit');
+			var nicknameBox = document.getElementById('nickname');
+			var passwordBox = document.getElementById('password');
+			var repasswordBox = document.getElementById('repassword');
+			
+			//监听提交按钮
+			submitBtn.addEventListener('tap', function(event) {
+				if(nicknameBox.value=='' || passwordBox.value==''){
+					mui.toast('昵称，密码不能为空！');
+					return;
+				}
+				if(repasswordBox.value=='' || passwordBox.value==''){
+					mui.toast('两次密码输入不一致');
+					return;
+				}
+				
+				submitBtn.disabled = true;
+				
+				//注册用户信息
+				var param = {user_id:userId,nickname:nicknameBox.value,password:passwordBox.value};
+				Api.updateInfo(param,function(result){
+					mui.toast(result.success);
+					//保存用户信息
+					state = {}; 
+					state.userId = result.userInfo.user_id;
+					state.userInfo = result.userInfo;
+					App.setState(state);
+					//页面跳转
+					//plus.webview.close('login');//关闭登陆页面
+					mui.openWindow({
+						url: 'user_center.html',
+						id: 'user_center',
+						show: {
+							autoShow:false,
+//							aniShow: 'pop-in'
+						}, 
+						waiting: {
+							autoShow: true,
+							title:'正在拼命加载...',
+						}
+					});
+					 
+					plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
+					 
+				},function(result){
+					//console.log(JSON.stringify(result));
+					mui.toast(result.errmsg);
+					submitBtn.disabled = false;
+				});
+				
+			}, false);
+			
+			console.log(JSON.stringify(state));
+		}else{
+			mui.alert('您还未注册,请先注册','影人根据地','确定',function(){
+				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭页面
+			});
+		}
+	});
+	
+	
+</script>
+</body>
+</html>

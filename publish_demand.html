@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>发布需求</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <link rel="stylesheet" href="css/upload-ui.min.css" />
+    <style type="text/css">
+    	html,.mui-content{background-color:#EEEEEE;}
+    	.mui-content{padding-bottom: 80px;}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">发布需求</h1>
+</header>
+<div class="mui-content">
+	<!--用户信息-->
+	<tpl id="userInfo"></tpl>
+	
+	<!--基本信息-->
+	<div class="mt10 publishbox-baseinfo upload-ui">
+		<div class="publishbox-cell publishbox-border-bottom">
+			<label style="width: auto;">标题：</label>
+			<input type="text" id="titleBox" placeholder="请输入标题" style="width: auto; float: left;" oninput="textCounter(this,'titleBox-tips',16);"/>
+			<div class="input-length" id="titleBox-tips">0/16</div>
+		</div>
+		<div class="textareabox">
+			<textarea id="descriptionBox" name="" rows="4" cols="" placeholder="详情描述" oninput="textCounter(this,'descriptionBox-tips',140);"></textarea>
+			<div class="input-length" id="descriptionBox-tips">0/140</div>
+		</div>
+		<div id='image-list' class="row image-list"></div>
+	</div>
+	<!--需求信息-->
+	<ul class="publishbox">
+		<li class="publishbox-cell mt05">
+			<label>联系方式：</label>
+			<input type="number" id="eventContactBox" placeholder="请输入联系方式"/>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>来源：</label>
+			<nav id="fromBox" class="mui-bar-nav mui-bar-tab input-radio-tab">
+				<a class="mui-tab-item mui-active" data="1">
+					<span class="mui-tab-label">个人</span>
+				</a>
+				<a class="mui-tab-item " data="2">
+					<span class="mui-tab-label">商家</span>
+				</a>
+			</nav>
+		</li>
+	</ul>
+</div>
+<nav class="mui-bar mui-bar-footer">
+	<button type="button" class="mui-btn mui-btn-block my-btn-cyan" id="saveBtn" style="min-width: 10em; max-width:80%;margin: 0 auto;">发布</button>
+</nav>
+<script src="js/mui.min.js"></script>
+<script src="js/app.min.js" ></script>
+<script src="js/api.min.js" ></script>
+<script src="tpl/build/template.js" ></script>
+<script src="js/binaryajax.min.js" ></script>
+<script src="js/exif.min.js" ></script>
+<script src="js/canvasResize.min.js" ></script>
+<script src="js/upload-ui.min.js" ></script>
+<script src="js/until.min.js" ></script>
+<script type="text/javascript" charset="UTF-8">
+(function($, doc) {
+	
+	var userId;
+	
+	/*定义表单元素*/
+	var titleBox = doc.getElementById('titleBox');
+	var descriptionBox = doc.getElementById('descriptionBox');
+	var eventContactBox = doc.getElementById('eventContactBox');
+	var fromBox = doc.getElementById('fromBox');
+	var photoBtn = doc.getElementById('photoBtn');
+	var saveBtn = doc.getElementById('saveBtn');
+	
+	//定义表单数据
+	var fromData = {};
+	
+	$.plusReady(function(){
+		/*获取用户信息*/
+		userId = App.getUserId();
+		var state = App.getState();
+		var userInfo = state.userInfo;
+		document.getElementById('userInfo').innerHTML = template('common/userInfo', {user:userInfo});
+	});
+	
+	
+	//监听按钮-保存设置
+	saveBtn.addEventListener('tap',function(event){
+		
+		if(titleBox.value.length==0){
+			alert('请填写标题');
+			titleBox.focus();
+			return false;
+		}
+		if(descriptionBox.value.length==0){
+			alert('请输入详情描述，请检查');
+			descriptionBox.focus();
+			return false;
+		}
+		
+		$.confirm('您确定发布吗？','影人根据地',['发布','返回修改'],function(e){
+			if (e.index == 0) {
+				fromData.user_id = userId;
+				fromData.publishtype = 'demand';
+				fromData.title = titleBox.value;
+				fromData.description = descriptionBox.value;
+				fromData.contact = eventContactBox.value;
+				fromData.from = fromBox.getElementsByClassName('mui-active')[0].getAttribute('data');//来源
+				fromData.files = getImgInputArray();//图片
+				Api.addPublish(fromData,function(result){
+					$.toast(result.successmsg);
+					var ws = plus.webview.currentWebview();//获取当前窗体
+					plus.webview.close(ws,'slide-out-right',600);//关闭当前页面
+				},function(result){
+					alert(result.errmsg);
+				}); 
+			} 
+		});
+	},false);
+		
+}(mui, document));	
+</script>
+</body>
+</html>

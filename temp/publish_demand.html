@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>发布需求</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <style type="text/css">
+    	html,.mui-content{background-color:#EEEEEE;}
+    	.mui-content{padding-bottom: 80px;}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">发布需求</h1>
+</header>
+<div class="mui-content">
+	<!--用户信息-->
+	<tpl id="userInfo"></tpl>
+	
+	<!--基本信息-->
+	<div class="mt10 publishbox-baseinfo">
+		<div class="publishbox-cell publishbox-border-bottom">
+			<label style="width: auto;">标题：</label>
+			<input type="text" id="titleBox" placeholder="请输入标题" style="width: auto; float: left;"/>
+			<div class="input-length"><span id="titleBox-tips">0</span>/<span>10</span></div>
+		</div>
+		<div class="textareabox">
+			<textarea id="descriptionBox" name="" rows="4" cols="" placeholder="详情描述"></textarea>
+			<div class="input-length"><span id="descriptionBox-tips">0</span>/<span>140</span></div>
+		</div>
+		
+		<ul class="mui-table-view mui-grid-view upload-box showimg">
+			<li class="mui-table-view-cell mui-media" id="addNote">
+				<a id="photoBtn">
+					<img src="images/icon_upload.jpg" class="addphoto"/>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!--需求信息-->
+	<ul class="publishbox">
+		<li class="publishbox-cell mt05">
+			<label>联系方式：</label>
+			<input type="text" id="eventContactBox" placeholder="请输入联系方式"/>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>来源：</label>
+			<nav id="fromBox" class="mui-bar-nav mui-bar-tab input-radio-tab">
+				<a class="mui-tab-item mui-active" data="1">
+					<span class="mui-tab-label">个人</span>
+				</a>
+				<a class="mui-tab-item " data="2">
+					<span class="mui-tab-label">商家</span>
+				</a>
+			</nav>
+		</li>
+	</ul>
+</div>
+<nav class="mui-bar mui-bar-footer">
+	<button type="button" class="mui-btn mui-btn-block my-btn-cyan" id="saveBtn" style="min-width: 10em; max-width:80%;margin: 0 auto;">发布</button>
+</nav>
+<script id="userInfoTpl" type="text/html">
+	<ul class="mui-table-view" style="margin-top: 0px;">
+		<li class="mui-table-view-cell mui-media userinfobar">
+			<a class="mui-navigate-right" id="myinfo">
+				<div class="mui-media-object mui-pull-left"><img src="images/demo/usericon_01.png"></div>
+				<div class="mui-media-body">
+					<p class="mui-ellipsis"><span class="username"><%=user.nickname%></span><span class="progress ml10">完善度46%</span></p>
+					<p class="mui-ellipsis ml10"><img src="images/icon_camera.png" style="width: 20px;"/> 3星</p>
+					<p class="mui-ellipsis ml10"><span class="mui-icon mui-icon-person usericon_01"></span>摄影师、摄像师、化妆师</p>
+					<p class="mui-ellipsis ml10"><span class="mui-icon mui-icon-phone usericon_02"></span><%=user.mobile%></p>
+					<p class="mui-ellipsis ml10"><span class="mui-icon mui-icon-location usericon_03"></span>北京 西城区</p>
+				</div>
+			</a>
+		</li>
+	</ul>
+</script>
+<script src="js/mui.min.js"></script>
+<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/api.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/arttmpl.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/binaryajax.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/exif.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/canvasResize.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="UTF-8">
+(function($, doc) {
+	$.plusReady(function(){
+		/*获取用户信息*/
+		var userId = App.getUserId();
+		var state = App.getState();
+		var userInfo = state.userInfo;
+		document.getElementById('userInfo').innerHTML = template('userInfoTpl', {user:userInfo});
+		
+		/*定义表单元素*/
+		var titleBox = doc.getElementById('titleBox');
+		var descriptionBox = doc.getElementById('descriptionBox');
+		var eventContactBox = doc.getElementById('eventContactBox');
+		var fromBox = doc.getElementById('fromBox');
+		var photoBtn = doc.getElementById('photoBtn');
+		var saveBtn = doc.getElementById('saveBtn');
+		
+		//定义表单数据
+		var fromData = {};
+		
+		// 全局数组对象，添加文件,用于压缩上传使用
+        var f1 = new Array();
+        
+        //监听添加图片
+		photoBtn.addEventListener('tap',function(){
+			var btnArray = [{
+				title: "拍照"
+			}, {
+				title: "从相册中选择图片"
+			}];
+			plus.nativeUI.actionSheet({
+				cancel: "取消",
+				buttons: btnArray
+			}, function(event) {
+				var index = event.index;
+				switch (index) {
+					case 1:
+						console.log('拍照');
+						cameraimages();
+						break;
+					case 2:
+						console.log('从相册中选择图片');
+						galleryImgs();
+						break;
+				}
+			});
+		});
+		
+		//拍照添加文件
+        function cameraimages() {
+            //每次拍摄或选择图片前清空数组对象
+            //f1.splice(0, f1.length);
+            //document.getElementsByClassName("showimg")[0].innerHTML = null;
+            var cmr = plus.camera.getCamera();
+            cmr.captureImage(function(p) {
+                plus.io.resolveLocalFileSystemURL(p, function(entry) {
+                    var localurl = entry.toLocalURL(); //把拍照的目录路径，变成本地url路径，例如file:///........之类的。
+                    console.log(localurl);
+                    showImg(localurl);
+                });
+            }, function(e) {
+                mui.toast("很抱歉，获取失败 "   +e);
+            });
+        }
+        
+		//相册选择图片
+        function galleryImgs() {
+            //每次拍摄或选择图片前清空数组对象
+            //f1.splice(0, f1.length);
+            //document.getElementsByClassName("showimg")[0].innerHTML = null;
+            // 从相册中选择图片
+            mui.toast("从相册中选择图片");
+            plus.gallery.pick(function(e) {
+                for (var i in e.files) {
+                    showImg(e.files[i]);
+                    console.log(e.files[i]);
+                }
+            }, function(e) {
+                mui.toast("取消选择图片");
+            }, {
+                filter: "image",
+                multiple: true
+            });
+        }
+        
+        //显示图片 
+        function showImg(url) {
+		    // 兼容以“file:”开头的情况
+		    if (0 != url.toString().indexOf("file://")) {
+		        url = "file://" + url;
+		    }
+		    var _div_ = document.getElementsByClassName("showimg")[0];
+		    var _img_ = new Image();
+		    _img_.src = url; // 传过来的图片路径在这里用。
+		    _img_.onload = function() {
+		        var tmph = _img_.height;
+		        var tmpw = _img_.width;
+		        var isHengTu = tmpw > tmph;
+		        var max = Math.max(tmpw, tmph);
+		        var min = Math.min(tmpw, tmph); 
+		        var bili = min / max;
+		        if (max > 1200) {
+		            max = 1200;
+		            min = Math.floor(bili * max);
+		        }
+		        tmph = isHengTu ? min : max; 
+		        tmpw = isHengTu ? max : min;
+		        _img_.onload = null;
+		        plus.io.resolveLocalFileSystemURL(url, function(entry) {
+		                entry.file(function(file) {
+		                    console.log(file.size + '--' + file.name);
+		                    canvasResize(file, {
+		                        width: tmpw,
+		                        height: tmph,
+		                        crop: false,
+		                        quality: 50, //压缩质量
+		                        rotate: 0,
+		                        callback: function(data, width, height) {
+		                            f1.push(data);
+		                            _img_.src = data;
+		                            //_div_.appendChild(_img_);
+		                            //构造节点
+		                            var li=doc.createElement("li");
+		                            var div=doc.createElement("div");
+		                            var img=doc.createElement("img");
+		                            li.className = 'mui-table-view-cell mui-media';
+		                            div.className = 'upload-thumb';
+		                            div.style.backgroundImage = "url(" + data + ")";
+		                            img.src = "images/icon_close.png";
+		                            img.className = "close";
+		                            div.appendChild(img);
+		                            li.appendChild(div);
+		                            //_div_.appendChild(li);
+		                            refNode = doc.getElementById('addNote');
+		                            _div_.insertBefore(li,refNode);
+									//console.log(li);
+		                            plus.nativeUI.closeWaiting();
+		                        }
+		                    });
+		                });
+		            },
+		            function(e) {
+		                plus.nativeUI.closeWaiting();
+		                console.log(e.message);
+		            });
+		    };
+		};
+		
+		//标题输入监听
+		titleBox.addEventListener('input',function(){
+			if(this.value.length>10){
+				doc.getElementById('titleBox-tips').innerText = this.value.length;
+				doc.getElementById('titleBox-tips').style.color = '#FF0000';
+			}else{
+				doc.getElementById('titleBox-tips').innerText = this.value.length;
+				doc.getElementById('titleBox-tips').style.color = '#AAAAAA';
+			}
+		});
+		
+		//描述输入监听
+		descriptionBox.addEventListener('input',function(){
+			if(this.value.length>140){
+				doc.getElementById('descriptionBox-tips').innerText = this.value.length;
+				doc.getElementById('descriptionBox-tips').style.color = '#FF0000';
+			}else{
+				doc.getElementById('descriptionBox-tips').innerText = this.value.length;
+				doc.getElementById('descriptionBox-tips').style.color = '#AAAAAA';
+			}
+		});
+		
+		//监听按钮-保存设置
+		saveBtn.addEventListener('tap',function(event){
+			
+			var fromChosed = fromBox.getElementsByClassName('mui-active');
+			var fromValue = fromChosed[0].getAttribute('data');
+			
+			if(titleBox.value.length==0){
+				alert('请填写标题');
+				titleBox.focus();
+				return false;
+			}
+			if(titleBox.value.length>10){
+				alert('标题超出限制，请检查');
+				titleBox.focus();
+				return false;
+			}
+			if(descriptionBox.value.length==0){
+				alert('请输入详情描述，请检查');
+				descriptionBox.focus();
+				return false;
+			}
+			if(descriptionBox.value.length>140){
+				alert('描述超出限制，请检查');
+				descriptionBox.focus();
+				return false;
+			}
+			
+			$.confirm('您确定发布吗？','影人根据地',['发布','返回修改'],function(e){
+				if (e.index == 0) {
+					fromData.user_id = userId;
+					fromData.title = titleBox.value;
+					fromData.description = descriptionBox.value;
+					fromData.contact = eventContactBox.value;
+					fromData.from = fromValue;
+					fromData.files = f1; 
+					Api.publishDemand(fromData,function(result){
+						$.toast(result.successmsg);
+						var ws = plus.webview.currentWebview();//获取当前窗体
+						plus.webview.close(ws,'slide-out-right',600);//关闭当前页面
+					},function(result){
+						alert(result.errmsg);
+					}); 
+				} 
+			});
+		},false);
+		
+	});
+}(mui, document));	
+</script>
+</body>
+</html>

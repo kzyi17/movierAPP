@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>详情</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	html,.mui-content{ background-color: #EEEEEE;}
+    	.demoimg{background-color: #FFFFFF;}
+		.demoimg img{width: 100%;}
+		
+		.mytabbar~.mui-content {
+		    padding-bottom: 0;
+		    padding-top: 84px;
+		}
+		.mytabbar{
+			top: 44px;
+			height: 40px;
+			background-color: #FFFFFF;
+		}
+		.mytabbar .mui-tab-item {
+		    height: 40px;
+		}
+		.mytabbar .mui-tab-item.mui-active {
+		    color: #007aff;
+		    border-bottom: 1px solid #007AFF;
+		}
+		.mytabbar .mui-tab-item .mui-icon~.mui-tab-label {
+			display:initial;
+			font-size: 17px;
+		}
+		.mytabbar .mui-tab-item .mui-icon {
+			top: 0;
+		}
+		footer {
+			position: fixed;
+			width: 100%;
+			height: 50px;
+			min-height: 50px;
+			border-top: solid 1px #bbb;
+			left: 0px;
+			bottom: 0px;
+			overflow: hidden;
+			padding: 0px 50px 0 10px;
+			background-color: #fafafa;
+		}
+		.footer-left {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			left: 0px;
+			bottom: 0px;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 100%;
+			padding: 12px 4px;
+		}
+		.footer-right {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			right: 0px;
+			bottom: 0px;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 100%;
+			padding: 12px 5px;
+			display: inline-block;
+		}
+		.footer-center {
+			height: 100%;
+			padding: 5px 0px;
+		}
+		.footer-center [class*=input] {
+			width: 100%;
+			height: 100%;
+			border-radius: 5px;
+		}
+		.footer-center .input-text {
+			background: #fff;
+			border: solid 1px #ddd;
+			padding: 10px !important;
+			font-size: 16px !important;
+			line-height: 18px !important;
+			font-family: verdana !important;
+			overflow: hidden;
+		}
+		.footer-center .input-sound {
+			background-color: #eee;
+		}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">小羊跳跳</h1>
+</header>
+<nav class="mui-bar mui-bar-tab mytabbar">
+	<a class="mui-tab-item mui-active" href="#tabbar">
+		<span class="mui-tab-label">详情</span>
+	</a>
+	<a class="mui-tab-item" href="#tabbar-with-chat">
+		<span class="mui-icon mui-icon-compose"></span>
+		<span class="mui-tab-label">评论</span>
+	</a>
+</nav>
+<div class="mui-content">
+	<div id="tabbar" class="mui-control-content mui-active">
+		<tpl id="userInfo">
+		</tpl>
+		<div class="demoimg mt10" style="padding: 10px 10px;" id="imgInfo">
+			
+		</div>
+	</div>
+	<div id="tabbar-with-chat" class="mui-control-content">
+		<div class="demoimg mt10"><img src="images/demo/comment.jpg"/></div>
+		<div class="demoimg mt10"><img src="images/demo/comment.jpg"/></div>
+		<div class="demoimg mt10"><img src="images/demo/comment.jpg"/></div>
+		<footer>
+			<!--<div class="footer-left">
+				<i id='msg-image' class="mui-icon mui-icon-camera" style="font-size: 28px;"></i>
+			</div>-->
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text'></textarea>
+			</div>
+			<label for="" class="footer-right"> 
+				<!--<i id='msg-type' class="mui-icon mui-icon-mic"></i>-->
+				<button type="button" id="BtnComment">发送</button>
+			</label> 
+		</footer>
+	</div>
+</div>
+
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/api.min.js" ></script>
+<script src="js/md5.min.js"></script> 
+<script type="text/javascript" src="js/until.min.js" ></script>
+<script type="text/javascript" src="tpl/build/template.js" ></script>
+<script>
+(function($) { 
+	$.init();
+	$.plusReady(function(){
+		//监听详情初始化
+		window.addEventListener("listDetail", listDetail);
+	});
+	
+	document.getElementById("BtnComment").addEventListener('tap',publishComment,false);
+	
+	//加载详情
+	function listDetail(event){
+		var extrasData = event.detail;
+		var params = {publish_id:extrasData.id} 
+		document.getElementById('userInfo').innerHTML ='';
+		document.getElementById('imgInfo').innerHTML = '';
+		Api.getPublishDetail(params,function(res){
+			//document.getElementById('userInfo').innerHTML = template('userInfo', {user:res.userInfo});
+			document.getElementById('imgInfo').innerHTML = buildGalleryElement(res.imgInfo);
+			console.log(JSON.stringify(res));
+		},function(res){
+			$.toast(res.errmsg)
+		});
+		console.log(JSON.stringify(extrasData));
+	}
+	/**
+	 * 构建相册项
+	 * @param {Object} data
+	 */
+	function buildGalleryElement(listData){
+		var html = '';
+		for(i = 0; i < listData.length; i ++){
+			html += template('publish/detail_imginfo',listData[i]);
+		}
+		return html;
+	};
+	/**
+	 * 发表评论
+	 * */
+	function publishComment(){
+		console.log('ffff');
+	}
+	
+}(mui));	
+</script>
+</body>
+</html>

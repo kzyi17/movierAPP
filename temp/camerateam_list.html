@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>摄影团队列表</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <style type="text/css">
+    	html,.mui-content{ background-color: #EEEEEE;}
+		.mui-popover {
+			width: 200px;
+			height: 100px;
+		}
+		.nav-popover{
+			width: 100px;
+		}
+		.btnbox{
+			background-color: #FFFFFF;
+			border-bottom: 1px solid #dbdbdb;
+			padding: 10px 10px 2px 10px;
+		}	
+		.demoimg img{width: 100%;}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title mynav-title" ><a href="#middlePopover">摄影团队</a></h1>
+</header>
+<div class="mui-content">
+	<nav class="my-barnav myfilter">
+		<a class="my-barnav-item" href="#Popover_servicetype">服务类型</a>
+		<a class="my-barnav-item">地区</a>
+		<a class="my-barnav-item" href="#Popover_style">风格</a> 
+		<a class="my-barnav-item" href="#Popover_tztype">帖子类型</a> 
+	</nav>
+	<div class="btnbox">
+		<button id='' class="mui-btn mui-btn-block my-btn-swichmap">
+			<span class="mui-pull-left mui-icon mui-icon-bars"></span>
+			<span class="mui-pull-left ml5">切换列表模式</span>
+			<span class="mui-pull-right">结果300条</span>
+		</button>
+	</div>
+	<div class="demoimg mt10"><a href="cameraman_detail.html"><img src="images/demo/cameraman_list_item_01.jpg" /></a></div>
+	<div class="demoimg mt10"><a href="cameraman_detail.html"><img src="images/demo/cameraman_list_item_02.jpg" /></a></div>
+	<div class="demoimg mt10"><a href="cameraman_detail.html"><img src="images/demo/cameraman_list_item_01.jpg" /></a></div>
+	<div class="demoimg mt10"><a href="cameraman_detail.html"><img src="images/demo/cameraman_list_item_02.jpg" /></a></div>
+</div>
+<div id="middlePopover" class="mui-popover ">
+	<div class="mui-popover-arrow"></div>
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">摄影师</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">照相师</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="Popover_servicetype" class="mui-popover nav-popover">
+	<div class="mui-popover-arrow"></div>
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">个人</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">团体</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="Popover_style" class="mui-popover nav-popover">
+	<div class="mui-popover-arrow"></div>
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">婚礼摄影</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">淘宝摄影</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="Popover_tztype" class="mui-popover nav-popover">
+	<div class="mui-popover-arrow"></div>
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">个人</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">商家</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script src="js/mui.min.js"></script>
+<script>
+	mui.init({
+		
+	});
+//	mui('.mui-scroll-wrapper').scroll();
+	mui('body').on('shown', '.mui-popover', function(e) {
+//		console.log('shown', e.detail.id);//detail为当前popover元素
+	});
+	mui('body').on('hidden', '.mui-popover', function(e) {
+//		console.log('hidden', e.detail.id);//detail为当前popover元素
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta name="HandheldFriendly" content="true"/>
+	<meta name="MobileOptimized" content="320"/>
+	<title></title>
+	<link href="css/mui.min.css" rel="stylesheet"/>
+	<style type="text/css">
+		#map {
+			width: 100%;
+			position: fixed;
+			top: 0px;
+			bottom: 0px;
+			line-height: 200px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="map">地图加载中...</div>
+	
+	
+<script src="js/mui.min.js"></script>
+<script type="text/javascript">
+	var ws=null,wo=null;
+	var em=null,map=null,pcenter=null;
+	var watchId;
+	var pcenter;
+	// H5 plus事件处理
+	function plusReady(){
+		if(!em||ws){return};
+		// 获取窗口对象
+		ws=plus.webview.currentWebview();
+		wo=ws.opener();
+		
+		plus.geolocation.getCurrentPosition( function(position){
+			console.log(JSON.stringify(position));
+			var codns = position.coords;//获取地理坐标信息；
+			var lat = codns.latitude;//获取到当前位置的纬度；
+			str = '';
+			str += "纬度："+lat+"\n";
+			var longt = codns.longitude;//获取到当前位置的经度
+			str += "经度："+longt+"\n";
+			var accu = codns.accuracy;//地理坐标信息精确度信息；
+			str += "精确度："+accu+"\n";
+			
+			pcenter = new plus.maps.Point(longt,lat);
+			setTimeout(function(){
+				map=new plus.maps.Map("map");
+				map.setZoom(16);
+				map.showUserLocation( true );
+				map.getUserLocation(function(state,pos){
+					if(0==state){
+						map.setCenter(pos);
+					}
+				});
+				//var marker=new plus.maps.Marker(new plus.maps.Point(longt,lat));
+				//marker.setIcon("images/icon_camera.png");
+				//marker.setLabel("HBuilder");
+				//var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
+				//marker.setBubble(bubble);
+				//map.addOverlay(marker);
+//				createMarker(longt,lat);
+				//userLocation();
+			},300);
+		
+			console.log(str);
+		}, function ( e ) {
+			console.log( "获取定位位置信息失败："+e.message );
+		},{geocode:true,provider:'amap'}); 
+		
+		//高德地图坐标为(116.3974357341,39.9085574220), 百度地图坐标为(116.3975,39.9074)
+//		pcenter = new plus.maps.Point(116.3975,39.9074);
+//		setTimeout(function(){
+//			map=new plus.maps.Map("map");
+//			map.centerAndZoom(pcenter,12);
+//			createMarker();
+//		},300); 
+		// 显示页面并关闭等待框
+	    ws.show("pop-in");
+	}
+	if(window.plus){
+		plusReady();
+	}else{
+		document.addEventListener("plusready",plusReady,false);
+	}
+	// DOMContentloaded事件处理
+	document.addEventListener("DOMContentLoaded",function(){
+		em=document.getElementById("map");
+		window.plus&&plusReady();
+	},false);
+	
+	function userLocation(){
+		map.showUserLocation( true );
+		map.getUserLocation(function(state,pos){
+			if(0==state){
+				map.setCenter(pos);
+			}
+		});
+	}
+	
+	function createMarker(longt,lat){
+		//高德地图坐标为(116.3406445236,39.9630878208), 百度地图坐标为(116.347292,39.968716
+		var marker=new plus.maps.Marker(new plus.maps.Point(longt,lat));
+		marker.setIcon("images/icon_camera.png");
+		marker.setLabel("HBuilder");
+		var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
+		marker.setBubble(bubble);
+		map.addOverlay(marker);
+	}
+	
+	
+	function userLocation(){
+		map.showUserLocation( true );
+		map.getUserLocation(function(state,pos){
+			if(0==state){
+				map.setCenter(pos);
+			}
+		});
+	}
+	
+	function createMarker(){
+		//高德地图坐标为(116.3406445236,39.9630878208), 百度地图坐标为(116.347292,39.968716
+		var marker=new plus.maps.Marker(new plus.maps.Point(116.3406445236,39.9630878208));
+		marker.setIcon("/logo.png");
+		marker.setLabel("HBuilder");
+		var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
+		marker.setBubble(bubble);
+		map.addOverlay(marker);
+	}
+	
+	/*function createSubview(){
+		// 创建加载内容窗口
+		var topoffset='44px';
+		if(plus.navigator.isImmersedStatusbar()){// 兼容immersed状态栏模式
+			topoffset=(Math.round(plus.navigator.getStatusbarHeight())+44)+'px';
+		}
+		var wsub=plus.webview.create('maps_map_sub.html','sub',{top:topoffset,height:'60px',position:'absolute',scrollIndicator:'none',background:'transparent'});
+		ws.append(wsub);
+	}*/
+	
+	function resetMap(){
+		//map.centerAndZoom(pcenter,12);
+		map.reset();
+	}
+</script>
+</body>
+</html>

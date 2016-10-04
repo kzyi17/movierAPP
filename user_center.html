@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>用户中心</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	html,.mui-content{background-color: #F1F1F1;}
+    	.accountinfo{font-size: 12px;margin-right: 24px;color: #AAAAAA;}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">我的</h1>
+</header>
+<div class="mui-content">
+	<tpl id="userInfo">
+		
+	</tpl>
+	
+	<ul class="mui-table-view mt10">
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我的钱包<span class="mui-pull-right accountinfo">现金余额 0.00元</span></a></li>
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我预约的</a></li>
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我的关注</a></li>
+	</ul>
+	
+	<ul class="mui-table-view mt10">
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>预约我的</a></li>
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我的发布</a></li>
+	</ul>
+	
+	<ul class="mui-table-view mt10">
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我的保险</a></li>
+	</ul>
+   
+   	<ul class="mui-table-view mt10">
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>活动报名</a></li>
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>拨打客服电话</a></li>
+	</ul>
+	
+	<ul class="mui-table-view mt10">
+		<li class="mui-table-view-cell"><a class="mui-navigate-right" id="btn_quit"><span class="mui-icon mui-icon-arrowdown"></span>退出登录</a></li>
+	</ul>
+	
+	<br /><br /><br /><br />
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="tpl/build/template.js" ></script>
+<script type="text/javascript">
+	window.onload = function(){
+		//mui.init();
+	    //从服务器获取数据
+	    //业务数据获取完毕，并已插入当前页面DOM；
+	    //注意：若为ajax请求，则需将如下代码放在处理完ajax响应数据之后；
+		mui.plusReady(function(){
+	    	//关闭等待框
+			plus.nativeUI.closeWaiting();
+			  
+			var state = App.getState();
+			var userInfo = state.userInfo;
+			var html = template('userInfo', {user:userInfo});
+			document.getElementById('userInfo').innerHTML = html;
+			console.log(JSON.stringify(state));
+			  
+	    	mui.currentWebview.show();
+	    	
+	    	
+	    	//监听按钮 - 我的资料
+			document.getElementById('myinfo').addEventListener('tap', function(event) {
+				mui.openWindow({
+					url: 'user_info.html',
+					id: 'user_info',
+					show: {
+						aniShow: 'pop-in',
+						autoShow:false
+					},
+					waiting: {
+						autoShow: true,
+						title:'正在玩命加载...',
+					}
+				});
+			}, false);
+	  	});
+	  	
+	}
+	
+	
+	//退出登录
+	document.getElementById('btn_quit').addEventListener('tap', function(event) {
+		mui.confirm('是否退出当前账号','影人根据地',['取消','退出'],function(e) {
+			if (e.index == 1) {
+				App.clearState();
+				mui.back();
+			} 
+		});
+	}, false);
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>发布活动</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mui.picker.min.css"/>
+    <link rel="stylesheet" href="css/upload-ui.min.css" />
+    <style type="text/css">
+    	html,.mui-content{background-color:#EEEEEE;}
+    	.mui-content{padding-bottom: 80px;}
+    </style>
+</head> 
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">发布活动</h1>
+</header>
+<div class="mui-content">
+	<!--用户信息-->
+	<tpl id="userInfo"></tpl>
+	
+	<!--基本信息-->
+	<div class="mt10 publishbox-baseinfo upload-ui">
+		<div class="publishbox-cell publishbox-border-bottom">
+			<label style="width: auto;">标题：</label>
+			<input type="text" id="titleBox" placeholder="请输入标题" style="width: auto; float: left;" oninput="textCounter(this,'titleBox-tips',16);"/>
+			<div class="input-length" id="titleBox-tips">0/16</div>
+		</div>
+		<div class="textareabox">
+			<textarea id="descriptionBox" name="" rows="4" cols="" placeholder="详情描述" oninput="textCounter(this,'descriptionBox-tips',140);"></textarea>
+			<div class="input-length" id="descriptionBox-tips">0/140</div>
+		</div>
+		<div id='image-list' class="row image-list"></div>
+	</div>
+	<!--活动信息-->
+	<ul class="publishbox">
+		<li class="publishbox-cell mt05">
+			<label>时间：</label>
+			<button class="pickerbtn" id="eventTimeBtn">请输入活动时间</button>
+		</li> 
+		<li class="publishbox-cell mt05">
+			<label>性质：</label>
+			<button class="pickerbtn" id="eventAttrBtn">请选择活动性质</button>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>地点：</label>
+			<input type="text" id="eventLocationBox" value="" placeholder="请输入活动具体地点"/>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>男女要求：</label>
+			<button class="pickerbtn" id="eventSexBtn">请选择性别要求</button>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>会员要求：</label>
+			<button class="pickerbtn" id="eventMemberBtn">请选择会员要求</button>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>职业要求：</label>
+			<button class="pickerbtn" id="eventJobBtn">请选择职业要求</button>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>活动费用：</label>
+			<input type="text" id="eventCostBox" placeholder="请输入活动报名费用"/>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>联系方式：</label>
+			<input type="text" id="eventContactBox" placeholder="请输入联系方式"/>
+		</li>
+		<li class="publishbox-cell mt05">
+			<label>来源：</label>
+			<nav id="fromBox" class="mui-bar-nav mui-bar-tab input-radio-tab">
+				<a class="mui-tab-item mui-active" data="1">
+					<span class="mui-tab-label">个人</span>
+				</a>
+				<a class="mui-tab-item " data="2">
+					<span class="mui-tab-label">商家</span>
+				</a>
+			</nav>
+		</li>
+	</ul>
+</div>
+<nav class="mui-bar mui-bar-footer">
+	<button type="button" class="mui-btn mui-btn-block my-btn-cyan" id="saveBtn" style="min-width: 10em; max-width:80%;margin: 0 auto;">发布</button>
+</nav>
+<script src="js/mui.min.js"></script>
+<script src="js/app.min.js" ></script>
+<script src="js/api.min.js" ></script>
+<script src="tpl/build/template.js" ></script>
+<script src="js/binaryajax.min.js" ></script>
+<script src="js/exif.min.js" ></script>
+<script src="js/canvasResize.min.js" ></script>
+<script src="js/mui.picker.min.js" ></script>
+<script src="js/data_picker.min.js" ></script>
+<script src="js/upload-ui.min.js" ></script>
+<script src="js/until.min.js" ></script>
+<script>
+(function($) {
+	
+	var userId;
+	
+	/*定义表单元素*/
+	var titleBox = document.getElementById('titleBox');
+	var descriptionBox = document.getElementById('descriptionBox');
+	var eventLocationBox = document.getElementById('eventLocationBox');
+	var eventCostBox = document.getElementById('eventCostBox');
+	var eventContactBox = document.getElementById('eventContactBox');
+	var fromBox = document.getElementById('fromBox');
+	var saveBtn = document.getElementById('saveBtn');
+	var eventTimeBtn = document.getElementById('eventTimeBtn');
+	var eventAttrBtn = document.getElementById('eventAttrBtn');
+	var eventSexBtn = document.getElementById('eventSexBtn');
+	var eventMemberBtn = document.getElementById('eventMemberBtn');
+	var eventJobBtn = document.getElementById('eventJobBtn');
+	
+	//定义表单数据
+	var fromData = {};
+	
+	$.plusReady(function(){
+		/*获取用户信息*/
+		userId = App.getUserId();
+		var state = App.getState();
+		var userInfo = state.userInfo;
+		document.getElementById('userInfo').innerHTML = template('common/userInfo', {user:userInfo});
+	});
+	
+	
+	//定义选择器
+	var dtpicker = new $.DtPicker({"beginYear":2016,"endYear":2017});
+	var picker = new $.PopPicker();
+	
+	//监听活动时间
+	eventTimeBtn.addEventListener('tap',function(event){
+		dtpicker.show(function(rs) {
+			fromData.event_time = rs.value;
+			eventTimeBtn.innerText = rs.text;
+		});
+	},false);
+	
+	//监听活动性质
+	eventAttrBtn.addEventListener('tap', function(event) {
+		picker.setData(eventAttrData);
+		picker.show(function(items) {
+			fromData.attribute = items[0].value;
+			eventAttrBtn.innerText = items[0].text;
+		});
+	}, false);
+	
+	//监听性别要求
+	eventSexBtn.addEventListener('tap', function(event) {
+		picker.setData(eventSexData);
+		picker.show(function(items) {
+			fromData.preference_sex = items[0].value;
+			eventSexBtn.innerText = items[0].text;
+		});
+	}, false);
+	
+	//监听会员要求
+	eventMemberBtn.addEventListener('tap', function(event) {
+		picker.setData(eventMemberData);
+		picker.show(function(items) {
+			fromData.preference_member = items[0].value;
+			eventMemberBtn.innerText = items[0].text;
+		});
+	}, false);
+	
+	//监听职业要求
+	eventJobBtn.addEventListener('tap', function(event) {
+		picker.setData(eventJobData);
+		picker.show(function(items) {
+			fromData.preference_job = items[0].value;
+			eventJobBtn.innerText = items[0].text;
+		});
+	}, false);
+	
+	//监听按钮-保存设置
+	saveBtn.addEventListener('tap',function(event){
+		
+		if(titleBox.value.length==0){
+			alert('请填写标题');
+			titleBox.focus();
+			return false;
+		}
+		if(descriptionBox.value.length==0){
+			alert('请输入详情描述，请检查');
+			descriptionBox.focus();
+			return false;
+		}
+		
+		$.confirm('您确定发布吗？','影人根据地',['发布','返回修改'],function(e){
+			if (e.index == 0) {
+				fromData.user_id = userId;
+				fromData.publishtype = 'event';
+				fromData.title = titleBox.value;
+				fromData.description = descriptionBox.value;
+				fromData.location = eventLocationBox.value;
+				fromData.contact = eventContactBox.value;
+				fromData.cost = eventCostBox.value;
+				fromData.from = fromBox.getElementsByClassName('mui-active')[0].getAttribute('data');//来源
+				fromData.files = getImgInputArray();//图片
+				Api.addPublish(fromData,function(result){
+					$.toast(result.successmsg);
+					var ws = plus.webview.currentWebview();//获取当前窗体
+					plus.webview.close(ws,'slide-out-right',600);//关闭当前页面
+				},function(result){
+					alert(result.errmsg);
+				}); 
+			} 
+		});
+	},false);
+}(mui));	
+</script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+	.index-nav-1 {
+		background-color: #eeeeee;
+	}
+	.index-nav-2 {}
+	.index-nav-2 .my-barnav-item {
+		border-bottom: 1px solid #dbdbdb;
+		border-left: 1px solid #dbdbdb;
+		padding-top: 5px;
+		padding-bottom: 5px; 
+	}
+	.index-nav-2 .my-barnav-item:first-child {
+		border-left: 0px;
+	} 
+	.nav-icon-1 {
+		background: url(images/icon_icon01.png) no-repeat 0 50%;
+		padding-left: 50px;
+		background-size: 50px;
+		display: inline-block;
+		height: 60px;
+		line-height: 60px;
+		font-size: 18px;
+	}
+	.nav-icon-2 {
+		background: url(images/icon_icon02.png) no-repeat 0 50%;
+		padding-left: 50px;
+		background-size: 50px;
+		display: inline-block;
+		height: 60px;
+		line-height: 60px;
+		font-size: 18px;
+	}
+	.index-nav-3.mui-grid-view.mui-grid-9 {
+		background-color: #ffffff;
+	}
+	.index-nav-3 img {
+		width: 100%;
+	}
+	.index-nav-3.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+		padding: 6px 6px;
+	}
+	.index-nav-3.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+		margin-top: 2px;
+	}
+	.index-nav-3.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+		border: 0px;
+	}
+</style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <button class="mui-btn-link mui-pull-left" id="btnCity"><span id="citytxt">北京</span><span class="mui-icon mui-icon-arrowdown"></span></button>
+    <a class="mui-pull-right"><span class="mui-icon mui-icon-search"></span></a>
+</header>
+<footer class="mynav mui-bar mui-bar-tab">
+	<a class="mui-tab-item mui-active" id="menu_home">
+		<span class="mui-icon mui-icon-home"></span>
+		<span class="mui-tab-label">首页</span>
+	</a>
+	<a class="mui-tab-item" id="menu_message">
+		<span class="mui-icon mui-icon-chatbubble"></span>
+		<span class="mui-tab-label">消息</span>
+	</a>
+	<a class="mui-tab-item" id="menu_schedule">
+		<span class="mui-icon mui-icon-list"></span>
+		<span class="mui-tab-label">我的档期</span>
+	</a>
+	<a class="mui-tab-item" href="about.html" id="menu_publish">
+		<span class="mui-icon mui-icon-compose"></span>
+		<span class="mui-tab-label">发布</span>
+	</a>
+	<a class="mui-tab-item" href="userCenter.html" id="menu_user">
+		<span class="mui-icon mui-icon-person"></span>
+		<span class="mui-tab-label">我</span>
+	</a> 
+</footer>
+<div class="mui-content">
+	<!--顶部快捷菜单-->
+	<nav class="my-barnav index-nav-1">
+		<a class="my-barnav-item" id="btnCameraman">附近影人</a>
+		<a class="my-barnav-item" id="btnCamerateam">附近团队</a>
+		<a class="my-barnav-item" id="btnEquipment">附近闲器</a>
+		<a class="my-barnav-item" id="btnUsed">附近二手</a>
+	</nav>
+	<!--END顶部快捷菜单-->
+	<!--轮播图-->
+	<div class="mui-slider">
+  		<div class="mui-slider-group">
+			<div class="mui-slider-item"><a href="#"><img src="images/demo/runpic1.jpg" height="150"/></a></div>
+			<div class="mui-slider-item"><a href="#"><img src="images/demo/runpic1.jpg" height="150"/></a></div>
+  		</div>
+	</div>
+	<!--END轮播图-->
+	<!--中部菜单-->
+	<nav class="my-barnav index-nav-2">
+		<a class="my-barnav-item" id="btnSchedule"><span class="nav-icon-1">谁有档期</span></a>
+		<a class="my-barnav-item" id="btnPublishAct"><span class="nav-icon-2">发起活动</span></a>
+	</nav>
+	<!--END中部菜单-->
+	<!--中部菜单2-->
+	<ul class="index-nav-3 mui-table-view mui-grid-view mui-grid-9">
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnOrderToShop">
+			<a id="btnJobToEq">
+				<div class="menu_icon">
+					<img src="images/icon_icon03.png"/>
+				</div>
+				<div class="mui-media-body" >以活易物</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnOrderToHome">
+			<a id="btnEqToEq">
+				<div class="menu_icon">
+					<img src="images/icon_icon04.png"/>
+				</div>
+				<div class="mui-media-body">以物易物</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnDemand">
+			<a id="">
+				<div class="menu_icon">
+					<img src="images/icon_icon05.png"/>
+				</div>
+				<div class="mui-media-body">紧急需求</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnEvent">
+			<a id="">
+				<div class="menu_icon">
+					<img src="images/icon_icon06.png"/>
+				</div>
+				<div class="mui-media-body">影人活动</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnSpa1">
+			<a id="">
+				<div class="menu_icon">
+					<img src="images/icon_icon07.png"/>
+				</div>
+				<div class="mui-media-body">我的关注</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnSpa2">
+			<a id="">
+				<div class="menu_icon">
+					<img src="images/icon_icon08.png"/>
+				</div>
+				<div class="mui-media-body">影人社保</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnSpa3">
+			<a id="">
+				<div class="menu_icon">
+					<img src="images/icon_icon09.png"/>
+				</div>
+				<div class="mui-media-body">教育课程</div>
+			</a>
+		</li>
+		<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="btnWorks">
+			<a id="">
+				<div class="menu_icon">
+					<img src="images/icon_icon10.png"/>
+				</div>
+				<div class="mui-media-body">精彩作品</div>
+			</a>
+		</li>
+	</ul>
+	<!--END中部菜单-->
+	
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="js/data_filter.min.js" ></script>
+<script src="js/api.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+(function($, doc) {
+	var listPage;//定义列表页面
+	var userPosition;
+	
+	$.plusReady(function() {
+		plus.navigator.setStatusBarStyle( "UIStatusBarStyleBlackOpaque" );
+		plus.navigator.setStatusBarBackground("#343943");
+		
+		$.init({
+			preloadPages:[{
+				id:'list_detail',
+				url:'list_detail.html',
+			}]
+		});
+		
+		//监听退出
+		$.oldBack = mui.back;
+		var backButtonPress = 0;
+		$.back = function(event) {
+			backButtonPress++; 
+			if (backButtonPress > 1) {
+				plus.runtime.quit();
+			} else {
+				plus.nativeUI.toast('再按一次退出应用');
+			}
+			setTimeout(function() {
+				backButtonPress = 0;
+			}, 1000);
+			return false;
+		}; 
+		//预加载列表页面
+//		listPage = $.preload({
+//		    url:'list_main.html', 
+//		    id:'list_main',//默认使用当前页面的url作为id
+//		});    
+		
+		getCurrentPosition();  
+	});  
+	
+	/**
+	 * 更新用户坐标
+	 */
+	function getCurrentPosition(){
+		var state = App.getState();
+		if(state.userId){
+			plus.geolocation.getCurrentPosition( function(p){
+				var param = {map_id:state.userInfo.map_id,user_id:state.userId,nickname:state.userInfo.nickname,location:p.coords};
+				Api.updateUserPos(param,function(res){
+					console.log(JSON.stringify(res));
+				});
+			}, function ( e ) {
+				console.log( "获取定位位置信息失败："+e.message );
+			},{geocode:true,provider:'amap'});
+		}
+	} 
+	  
+	/////////////////////////////////////////////////////////
+	var userMenu = doc.getElementById('menu_user');
+	var messageMenu = doc.getElementById('menu_message');
+	var scheduleMenu = doc.getElementById('menu_schedule');
+	var publishMenu = doc.getElementById('menu_publish'); 
+	
+	//监听菜单按钮【用户中心】
+	userMenu.addEventListener('tap', function(event) {
+		App.loginAuth(function(){
+			$.openWindow({
+				url: 'user_center.html',
+				id: 'user_center',
+				show: {
+					autoShow:false,
+					aniShow: 'pop-in'
+				},
+				styles: {
+					popGesture: 'hide'
+				},
+				waiting: {
+					autoShow: true,
+					title:'正在玩命加载...',
+				}
+			});
+		});
+	}, false);
+	
+	//监听菜单按钮【发布】
+	publishMenu.addEventListener('tap', function(event) {
+		App.loginAuth(function(){
+			$.openWindow({
+				url: 'publish_main.html',
+				id: 'publish_main',
+				show: {
+					autoShow:false,
+					aniShow: 'pop-in'
+				},
+				waiting: {
+					autoShow: true,
+					title:'正在玩命加载...',
+				}
+			});
+		});
+	}, false);
+	
+	
+	//监听菜单按钮【消息】
+	messageMenu.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'message_main.html',
+			id: 'message_main',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	}, false);
+	
+	//监听菜单按钮【我的档期】
+	scheduleMenu.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'schedule_main.html',
+			id: 'schedule_main',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	}, false);
+	
+	
+	//附近影人btnCameraman
+	var btnCameraman = doc.getElementById('btnCameraman');
+	btnCameraman.addEventListener('tap', function(event) {
+		/*$.fire(listPage,'pageInit',{
+	    	pagetitle:'附近影人',
+	    	listtype:'demand',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);*/
+	  	$.openWindow({
+			url: 'nearbyMovier_main.html',
+			id: 'nearbyMovier_main',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: true
+			}
+		});
+	}, false);
+	
+	//附近团队按钮btnCameraman
+	var btnCamerateam = doc.getElementById('btnCamerateam');
+	btnCamerateam.addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'附近团队',
+	    	listtype:'demand',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	}, false);
+	
+	//附近闲器按钮btnEquipment
+	var btnEquipment = doc.getElementById('btnEquipment');
+	btnEquipment.addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'附近闲器',
+	    	listtype:'demand',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	}, false);
+	
+	//附近二手按钮按钮btnEquipment
+	var btnUsed = doc.getElementById('btnUsed');
+	btnUsed.addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'附近二手',
+	    	listtype:'demand',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	}, false);
+
+	//谁有档期
+	var btnSchedule = doc.getElementById('btnSchedule');
+	btnSchedule.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'schedule_search.html',
+			id: 'schedule_search',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	});
+	
+	//发起活动
+	var btnPublishAct = doc.getElementById('btnPublishAct');
+	btnPublishAct.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'publish_act.html',
+			id: 'publish_act',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	}); 
+	
+	//以活易物按钮
+	var btnJobToEq = doc.getElementById('btnJobToEq');
+	btnJobToEq.addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'以活易物',
+	    	listtype:'demand',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	}, false);
+	
+	//以物易物按钮
+	var btnEqToEq = doc.getElementById('btnEqToEq');
+	btnEqToEq.addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'以物易物',
+	    	listtype:'demand',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	}, false);
+	
+	//紧急需求
+	doc.getElementById('btnDemand').addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'紧急需求',
+	    	listtype:'event',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	},false);  
+	 
+	//影人活动
+	doc.getElementById('btnEvent').addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'影人活动',
+	    	listtype:'event',
+	    	filter:filterdata_event  
+	 	}); 
+	  	listPage.show('slide-in-right',300);
+	},false); 
+	
+	//精彩作品
+	doc.getElementById('btnWorks').addEventListener('tap', function(event) {
+		$.fire(listPage,'pageInit',{
+	    	pagetitle:'精彩作品',
+	    	listtype:'works',
+	    	filter:filterdata_works  
+	  	}); 
+	  	listPage.show('slide-in-right',300);
+	},false); 
+	
+	doc.getElementById("btnCity").addEventListener("tap",function () {
+		$.openWindow({
+			url:"changecity.html",
+		    id:"changecity",
+		    waiting:{
+		      autoShow:true,//自动显示等待框，默认为true
+		      title:'正在加载...',//等待对话框上显示的提示内容
+		    }
+		});
+	});
+	 
+}(mui, document));  	
+</script>	
+</body>
+</html>

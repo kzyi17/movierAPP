@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>发布</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	html,.mui-content{background-color:#DDDDDD;}
+    	.mui-table-view{background: none;}
+    	.mui-table-view:before{background: none;}
+    	.mui-table-view:after{background: none;}
+    	.mui-table-view.mui-grid-view .mui-table-view-cell{padding:20px 16px 10px 30px;}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">发布</h1>
+</header>
+<div class="mui-content">
+    <ul class="mui-table-view mui-grid-view my-table">
+    	<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" id="btnPublishWorks"><img src="images/button_publish_01.png"/></li>
+    	<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" id="btnPublishTrade"><img src="images/button_publish_02.png"/></li>
+    	<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" id="btnPublishAct"><img src="images/button_publish_03.png"/></li>
+    	<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" id="btnPublishDemand"><img src="images/button_publish_04.png"/></li>
+    </ul>
+</div>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" charset="UTF-8">
+(function($, doc) {
+	var btnPublishTrade = doc.getElementById('btnPublishTrade');
+	var btnPublishWorks = doc.getElementById('btnPublishWorks');
+	var btnPublishAct = doc.getElementById('btnPublishAct');
+	var btnPublishDemand = doc.getElementById('btnPublishDemand');
+	
+	mui.plusReady(function(){
+		//关闭等待框
+		plus.nativeUI.closeWaiting();
+		mui.currentWebview.show();
+	});
+	
+	//监听发布作品按钮
+	btnPublishWorks.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'publish_works.html',
+			id: 'publish_works',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	});
+	
+	//监听发布交易按钮
+	btnPublishTrade.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'publish_trade.html',
+			id: 'publish_trade',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	});
+	
+	//监听发布活动按钮
+	btnPublishAct.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'publish_act.html',
+			id: 'publish_act',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	});
+	
+	//监听发布需求按钮
+	btnPublishDemand.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'publish_demand.html',
+			id: 'publish_demand',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	});
+	
+}(mui, document));  	
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/iconfont.min.css"/>
+	<style type="text/css">
+		html,.mui-content{ background-color: #EEEEEE;}
+		@-webkit-keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+		@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+		.img-lazyload{-webkit-animation: fadeIn 350ms linear 0ms 1 normal both;animation: fadeIn 350ms linear 0ms 1 normal both;opacity:1;}
+	</style>
+</head>
+<body> 
+<!--下拉刷新容器-->
+<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+	<div class="mui-scroll">
+		<!--数据列表-->
+		<ul class="mui-table-view publist" id="listEl">
+		</ul>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/md5.min.js"></script> 
+<script src="js/until.min.js"></script>
+<script src="js/api.min.js"></script>
+<script src="js/template.min.js"></script>
+<script type="text/javascript">
+(function($) {
+	var params = {};
+	var page = 1;
+	var limit = 6;
+	var listEl,pullEl;
+	var publishtype = null;
+//	var ws = null;
+	var detailView = null;
+	var filter = {};
+	$.plusReady(function(){
+		$.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		}); 
+		
+		listEl = document.getElementById("listEl");
+		pullEl = $('#pullrefresh');
+		
+		detailView = plus.webview.getWebviewById('list_detail');
+		
+		$("#listEl").on('tap','li.mui-table-view-cell',function(){
+			var id = this.getAttribute("id");
+			//console.log(id);return;
+			$.fire(detailView,'listDetail',{
+		    	id:id  
+		  	}); 
+			detailView.show('slide-in-right',300);
+		});
+		
+		//监听列表初始化
+		window.addEventListener("listInit", listInit);
+		//监听列表初始化
+		window.addEventListener("listRefresh", listRefresh);
+	});
+	
+	/**
+	 * 列表初始化
+	 * @param {Object} event
+	 */
+	function listInit(event){
+		var extrasData = event.detail;
+		publishtype = extrasData.listtype;
+		filter = {};
+		filter.publishtype = publishtype;
+		page = 1;
+		listEl.innerHTML = '';
+		pullEl.pullRefresh().refresh(true); //调用上拉加载的重置函数
+		pullEl.pullRefresh().pullupLoading();
+//		console.log(JSON.stringify(extrasData));
+	}
+	
+	/**
+	 * 列表刷新
+	 * @param {Object} event
+	 */
+	function listRefresh(event){
+		var extrasData = event.detail;
+		filter = {};
+		filter.publishtype = publishtype;
+		filter.push=function(o){  
+	        //如果o是object  
+	        if(typeof(o)=='object') for(var p in o) this[p]=o[p];  
+	    };  
+		filter.push(extrasData);
+		page = 1;
+		listEl.innerHTML = '';
+		pullEl.pullRefresh().refresh(true); //调用上拉加载的重置函数
+		pullEl.pullRefresh().pullupLoading();
+		
+	}
+	
+	/**
+	 * 下拉刷新具体业务实现
+	 */
+	function pulldownRefresh() {
+		//console.log(JSON.stringify(params));
+		page = 1;
+		listEl.innerHTML = '';
+		pullEl.pullRefresh().endPulldownToRefresh(); //refresh completed
+		pullEl.pullRefresh().refresh(true); //调用上拉加载的重置函数
+		pullEl.pullRefresh().pullupLoading();
+	}
+	
+	/**
+	 * 上拉加载具体业务实现
+	 */
+	function pullupRefresh() {
+		setTimeout(function() {
+			params.filter = filter;
+			params.page = page;
+			params.limit = limit; 
+			//调用接口获取数据
+			Api.getPublishList(params,function(res){
+				if(res.length>0){
+					listItems = buildLiElement(res);
+					listEl.appendChild(listItems);
+					pullEl.pullRefresh().endPullupToRefresh(false);
+					++page;
+				}else{
+					pullEl.pullRefresh().endPullupToRefresh(true); 
+				}
+			},function(res){
+		    	pullEl.pullRefresh().endPullupToRefresh(true);
+		    	$.toast(res.errmsg);
+		    });
+			
+		}, 1500);
+	}
+	
+	/**
+	 * 构建列表项
+	 * @param {Object} data
+	 */
+	function buildLiElement(listData){
+		var fragment = document.createDocumentFragment();
+		for(i = 0; i < listData.length; i ++){
+			tmpHtml = template('publishList',listData[i]);
+			tmpElement = parseStringToHTML(tmpHtml)
+			fragment.appendChild(tmpElement);
+		}
+		return fragment;
+	};
+	
+}(mui));	
+</script>
+</body>
+</html>

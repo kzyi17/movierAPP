@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>产品列表</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+    <style type="text/css">
+    	html,.mui-content{ background-color: #EEEEEE;}
+    	header~.myfilter{position: fixed;top: 44px;z-index: 11;left: 0;}
+		header~.myfilter~.mui-content{padding-top: 83px;}
+		.mui-popover {
+			width: 200px;
+			height: 100px;
+		}
+		.nav-popover{
+			width: 100px;
+		}
+		.btnbox{
+			background-color: #FFFFFF;
+			border-bottom: 1px solid #dbdbdb;
+			padding: 10px 10px 2px 10px;
+		}	
+		.demoimg img{width: 100%;}
+		
+		
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title mynav-title" ><a href="#middlePopover">相机</a></h1>
+</header>
+<nav class="my-barnav myfilter">
+	<a class="my-barnav-item" href="#Popover_servicetype">服务类型</a>
+	<a class="my-barnav-item">地区</a>
+	<a class="my-barnav-item" href="#Popover_style">风格</a> 
+	<a class="my-barnav-item" href="#Popover_tztype">帖子类型</a> 
+</nav>
+<div class="mui-content">
+	<div class="btnbox">
+		<button id='testBtn' class="mui-btn mui-btn-block my-btn-swichmap">
+			<span class="mui-pull-left mui-icon mui-icon-bars"></span>
+			<span class="mui-pull-left ml5">切换列表模式</span>
+			<span class="mui-pull-right">结果300条</span>
+		</button>
+	</div>
+	<!------------------------------------------------------->
+	<style type="text/css">
+		/**/
+		.mui-bar~.mui-content .mui-fullscreen {top: 145px;height: auto;z-index: 1;overflow: hidden;}
+		.mui-pull-top-tips {position: absolute;top: -20px;left: 50%;margin-left: -25px;width: 40px;height: 40px;border-radius: 100%;z-index: 1;}
+		.mui-bar~.mui-pull-top-tips {top: 24px;}
+		.mui-pull-top-wrapper {width: 42px;height: 42px;display: block;text-align: center;background-color: #efeff4;border: 1px solid #ddd;border-radius: 25px;background-clip: padding-box;box-shadow: 0 4px 10px #bbb;overflow: hidden;}
+		.mui-pull-top-tips.mui-transitioning {-webkit-transition-duration: 200ms;transition-duration: 200ms;}
+		.mui-pull-top-tips .mui-pull-loading {margin: 0;/*-webkit-backface-visibility: hidden;-webkit-transition-duration: 400ms;transition-duration: 400ms;*/}
+		.mui-pull-top-wrapper .mui-icon,.mui-pull-top-wrapper .mui-spinner {margin-top: 7px;}
+		.mui-pull-top-wrapper .mui-icon.mui-reverse {/*-webkit-transform: rotate(180deg) translateZ(0);*/}
+		.mui-pull-bottom-tips {	text-align: center;background-color: #efeff4;font-size: 15px;line-height: 40px;color: #777;}
+		.mui-pull-top-canvas {overflow: hidden;background-color: #fafafa;border-radius: 40px;box-shadow: 0 4px 10px #bbb;width: 40px;height: 40px;margin: 0 auto;}
+		.mui-pull-top-canvas canvas {width: 40px;}
+		.mui-slider-indicator.mui-segmented-control {background-color: #efeff4;}	
+		/*列表页*/
+		.publist{background: none;}
+		.publist li.mui-table-view-cell{background-color: #FFFFFF; margin-top:10px;}
+		.publist li:after{height:0}
+		.publist ul{list-style: none;padding: 0;}
+		.userbar{overflow: hidden; }
+		.userbar,.userbar p{font-size: 12px;}
+		.userbar .u_icon img{width: 42px;height: 42px;border-radius: 21px;}
+		.userbar .u_name{font-size: 14px; font-weight:600; color: #333333;}
+		.userbar .u_cost{font-size: 18px; font-weight:600; color: #FF0000;}
+		.icon-sex-woman{color: #fbcdcd; font-size: 22px;}
+		.icon-sex-male{color: #c1e3ff; font-size: 22px;} 
+		.infobar{overflow: hidden; clear: all; padding: 2px 0 5px 0;}
+		.infobar .i_title{ font-size: 18px; color:#6a9900;line-height: 1.8em;}
+		.photobar{overflow: hidden;clear: all;}
+		ul.photobar li{ width: 33.3%; float: left;padding: 0px 2px;margin: 0;}
+		ul.photobar li img{width: 100%;}
+		.visitorbar{overflow: hidden;clear: all; font-size: 14px;color: #999999;line-height: 26px;height: 26px;} 
+		.visitorbar .v_ucion{width: 60%;overflow: hidden;}
+		.visitorbar .v_ucion img{width: 26px;height: 26px;border-radius: 15px; }
+		.visitorbar .mui-icon{font-size: 16px;}
+		.linkbar{overflow: hidden;clear: all;}
+		.hitsinfo{ color: #999999; padding-left: 2px;padding-right: 2px;}
+	</style>
+	<!------------------------------------------------------->
+	<div id="slider" class="mui-fullscreen">
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll" id="pullrefresh">
+				<ul class="mui-table-view publist" id="publishList">
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="middlePopover" class="mui-popover ">
+	<div class="mui-popover-arrow"></div>
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll" >
+			<ul class="mui-table-view" >
+				<li class="mui-table-view-cell">
+					<a href="#">相机</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">摄相机</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<script id="publishListTpl" type="text/html">
+	<div class="userbar">
+		<div class="mui-pull-left u_icon">
+			<img src="images/demo/icon_msg_01.png">
+		</div>
+		<div class="mui-pull-left ml05 mt05"><span class="mui-icon iconfont icon-sex-woman"></span></div>
+		<div class="mui-pull-left ml05 mt05">
+			<p class="mui-ellipsis u_name">王草莓</p>
+			<p class=""><img src="images/icon_camera.png" style="width: 20px;"/> <span class="mui-icon icon-star"></span><span class="mui-icon icon-star"></span><span class="mui-icon icon-star"></span></p>
+		</div>	
+		<div class="mui-pull-right mui-text-right">
+			<p class="mui-ellipsis"><span class="u_cost">100</span> 元/天</p>
+			<p class="mui-ellipsis">朝阳区 距您2334km</p>
+		</div>
+	</div>
+	<div class="infobar">
+		<p class="mui-ellipsis i_title"><%=title%></p>
+		<p class="mui-ellipsis-2"><%=description%></p>  
+	</div>
+	<ul class="photobar mt10">
+		<li><img src="images/demo/cameraman_detail_02.jpg"/></li>
+		<li><img src="images/demo/cameraman_detail_02.jpg"/></li>
+		<li><img src="images/demo/cameraman_detail_02.jpg"/></li>
+		<li><img src="images/demo/cameraman_detail_02.jpg"/></li>
+		<li><img src="images/demo/cameraman_detail_02.jpg"/></li>
+		<li><img src="images/demo/cameraman_detail_02.jpg"/></li>
+	</ul>
+	<div class="visitorbar mt05">
+		<div class="mui-pull-left v_ucion">
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/>
+			<img src="images/demo/icon_msg_01.png"/> 
+			<img src="images/demo/icon_msg_01.png"/>
+		</div>
+		<div class="mui-pull-right"><%=hits%>人看过 <span class="mui-icon mui-icon-eye"></span></div>
+	</div>
+	<div class="linkbar mt10">
+		<button class="mui-btn mui-btn-link hitsinfo"><span class="mui-icon iconfont icon-like-2"></span> <%=collects%></button>
+		<button class="mui-btn mui-btn-link hitsinfo ml10"><span class="mui-icon iconfont icon-comment"></span> <%=comments%></button>
+		<button class="mui-btn mui-btn-link hitsinfo ml10"><span class="mui-icon iconfont icon-share"></span></button>
+		<button class="mui-btn my-btn-im mui-pull-right">聊一聊</button>
+	</div>
+</script>
+<script src="js/mui.min.js"></script>
+<script src="js/mui.pullToRefresh.js"></script>
+<script src="js/mui.pullToRefresh.material.js"></script>
+<script type="text/javascript" src="js/arttmpl.js" ></script>
+<script type="text/javascript" src="js/api.js" ></script>
+<script>
+(function($) {
+	//阻尼系数
+	var deceleration = mui.os.ios?0.003:0.0009;
+	$('.mui-scroll-wrapper').scroll({ 
+		bounce: false,
+		indicators: true, //是否显示滚动条
+		deceleration:deceleration
+	});
+	
+	var page = 1,limit = 1;
+	var param = {};
+	
+	$.plusReady(function() {
+		if ($.os.plus) {
+			setTimeout(function() {
+				$('#pullrefresh').pullToRefresh().pullDownLoading();
+			}, 1500);
+		} else {
+			$('#pullrefresh').pullToRefresh().pullDownLoading();
+		}
+	});
+	
+	$.ready(function() {
+		var pblist = document.getElementById("publishList");//列表数据容器
+		var pbpullrefresh = $('#pullrefresh');//上拉下拉容器
+		
+		//循环初始化所有下拉刷新，上拉加载。
+		pbpullrefresh.pullToRefresh({
+			down: {
+				callback:refresh 
+			},
+			up: {
+				callback: loadmore
+			}
+		});
+		
+		//下拉刷新
+		function refresh(){
+			page = 1;
+			//console.log(JSON.stringify(param));
+			setTimeout(function() {
+				param.page = page;
+				param.limit = limit;
+				Api.getPublishList(param,function(data){ 
+					pblist.innerHTML = '';
+					pblist.appendChild(createTpl(data));
+					page++;
+				},function(result){
+					console.log(result.errmsg);  
+				});
+				
+				pbpullrefresh.pullToRefresh().endPullDownToRefresh();
+				pbpullrefresh.pullToRefresh().refresh(true); 
+			}, 1000);	
+		}
+		
+		//上拉加载更多
+		function loadmore(){
+			setTimeout(function() { 
+				param.page = page;
+				param.limit = limit;
+				Api.getPublishList(param,function(data){ 
+					if(data.length>0){
+						page++;
+						pblist.appendChild(createTpl(data));
+						pbpullrefresh.pullToRefresh().endPullUpToRefresh();
+					}else{
+						pbpullrefresh.pullToRefresh().endPullUpToRefresh(true);
+					}
+					console.log(JSON.stringify(data));
+				},function(result){
+					console.log(result.errmsg); 
+					pbpullrefresh.pullToRefresh().endPullUpToRefresh();
+				});
+			}, 1000); 
+		} 
+		
+		//取得模板
+		function createTpl(data){
+			var fragment = document.createDocumentFragment();
+			for(i = 0; i < data.length; i ++){
+				var li = document.createElement('li');
+				li.className = 'mui-table-view-cell';
+				li.innerHTML = template('publishListTpl',data[i]);
+				fragment.appendChild(li);
+				/*li.setAttribute('id',result[i].merchant_id);*/
+			}
+			return fragment;
+		};
+		
+	});
+})(mui); 
+</script>
+</body>
+</html>

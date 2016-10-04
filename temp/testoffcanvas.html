@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <style type="text/css">
+    	.mui-off-canvas-right {
+		    right: 0;
+		    top: 44px;
+		}
+    </style>
+</head>
+<body>
+<!--侧滑菜单容器-->
+<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable mui-slide-in">
+	<!--菜单部分-->
+	<aside id="offCanvasSide" class="mui-off-canvas-right">
+		<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="content">
+					<p style="margin: 10px 15px;">
+						<button id="offCanvasHide" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">关闭侧滑菜单</button>
+					</p>
+				</div>
+				<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
+
+				</ul>
+			</div>
+		</div>
+	</aside>
+	<div class="mui-inner-wrap">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-back mui-pull-left"></a>
+			<a id="offCanvasBtn" href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-right"></a>
+			<h1 class="mui-title">左滑导航</h1>
+		</header>
+		<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="mui-content-padded">
+						<button id="offCanvasShow" type="button" class="mui-btn mui-btn-primary mui-btn-block" style="padding: 5px;">
+							显示侧滑菜单
+						</button>
+				</div>
+			</div>
+		</div>
+		<!-- off-canvas backdrop -->
+		<div class="mui-off-canvas-backdrop"></div>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+
+<script>
+		mui.init({
+			swipeBack: false,
+		}); 
+		 //侧滑容器父节点
+		var offCanvasWrapper = mui('#offCanvasWrapper');
+		 //主界面容器
+//		var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+//		 //菜单容器
+//		var offCanvasSide = document.getElementById("offCanvasSide");
+		
+		document.getElementById('offCanvasShow').addEventListener('tap', function() {
+			offCanvasWrapper.offCanvas('show');
+		});
+		document.getElementById('offCanvasHide').addEventListener('tap', function() {
+			offCanvasWrapper.offCanvas('close');
+		});
+		 //主界面和侧滑菜单界面均支持区域滚动；
+		mui('#offCanvasSideScroll').scroll();
+		mui('#offCanvasContentScroll').scroll();
+		 //实现ios平台的侧滑关闭页面；
+		if (mui.os.plus && mui.os.ios) {
+			offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+				plus.webview.currentWebview().setStyle({
+					'popGesture': 'none'
+				});
+			});
+			offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+				plus.webview.currentWebview().setStyle({
+					'popGesture': 'close'
+				});
+			});
+		}
+	</script>
+</body>
+</html>

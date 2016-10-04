@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>产品列表</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/iconfont.min.css"/>
+    <style type="text/css">
+    	html,.mui-content{ background-color: #EEEEEE;}
+    	header~.myfilter{position: fixed;top: 44px;z-index: 11;left: 0;}
+		header~.myfilter~.mui-content{padding-top: 83px;}
+		.mui-popover {
+			width: 200px;
+			height: 190px;
+		}
+		.nav-popover{
+			width: 100px;
+		}
+		.btnbox{
+			background-color: #FFFFFF;
+			border-bottom: 1px solid #dbdbdb;
+			padding: 10px 10px 2px 10px;
+			top: 87px;
+			position: absolute;
+			width: 100%;
+			display: block;
+		}	
+		.demoimg img{width: 100%;} 
+		.mui-off-canvas-right {
+		    right: 0;
+		    top: 44px;
+	        background: #e9e9e9;
+		}
+		.mui-off-canvas-wrap .mui-bar {
+			box-shadow: 0 0 1px rgba(0,0,0,.85);
+		}
+		.mui-off-canvas-wrap .mui-bar~.mui-table-view {
+			top:44px; 
+		}
+    </style>
+</head>
+<body>
+<!--侧滑菜单容器-->
+<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-slide-in">
+	<!--菜单部分-->
+	<aside id="offCanvasSide" class="mui-off-canvas-right">
+		<!--
+		<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="content">
+					<header class="mui-bar">
+						<button class="mui-btn mui-btn-link mui-pull-right" id="offCanvasHide">关闭</button>
+					</header>
+					<ul class="mui-table-view mui-table-view-radio">
+						<li class="mui-table-view-cell mui-selected">
+							<a class="mui-navigate-right ">
+								不限
+							</a>
+						</li>
+						<li class="mui-table-view-cell ">
+							<a class="mui-navigate-right">
+								Item 2
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								Item 3
+							</a>
+						</li>
+					</ul>
+					<ul class="mui-table-view">
+						<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item mui-checkbox mui-right">
+							<input type="checkbox" />阿克苏机场</li>
+						<li data-value="BPL" data-tags="ALaShanKou" class="mui-table-view-cell mui-indexed-list-item mui-checkbox mui-right">
+							<input type="checkbox" />阿拉山口机场</li>
+						<li data-value="AAT" data-tags="ALeTai" class="mui-table-view-cell mui-indexed-list-item mui-checkbox mui-right">
+							<input type="checkbox" />阿勒泰机场</li>
+					</ul>		
+				</div>
+			</div>
+		</div>
+		-->
+	</aside>
+	<div class="mui-inner-wrap">
+		<header class="mybar mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title mynav-title" ><a href="#topfilter" id="proListTypeTle">相机</a></h1>
+		</header>
+		<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+			<div class="btnbox">
+				<button id='offCanvasShow' class="mui-btn mui-btn-block my-btn-swichmap">
+					<span class="mui-pull-left mui-icon mui-icon-bars"></span>
+					<span class="mui-pull-left ml5">切换列表模式</span>
+					<span class="mui-pull-right">结果300条</span>
+				</button>
+			</div>
+			<div id="slider" class="mui-fullscreen">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll" id="pullrefresh">
+						<ul class="mui-table-view publist" id="publishList">
+						</ul>
+					</div>
+				</div> 
+			</div>
+		</div>
+		<!-- off-canvas backdrop -->
+		<div class="mui-off-canvas-backdrop"></div>
+	</div>
+</div>	
+<script id="publishListTpl" type="text/html">
+	<div class="userbar">
+		<div class="mui-pull-left u_icon">
+			<img src="images/demo/icon_msg_01.png">
+		</div>
+		<div class="mui-pull-left ml05 mt05"><span class="mui-icon iconfont icon-sex-woman"></span></div>
+		<div class="mui-pull-left ml05 mt05">
+			<p class="mui-ellipsis u_name">王草莓</p>
+			<p class=""><img src="images/icon_camera.png" style="width: 20px;"/> <span class="mui-icon icon-star"></span><span class="mui-icon icon-star"></span><span class="mui-icon icon-star"></span></p>
+		</div>	  
+		<div class="mui-pull-right mui-text-right">
+			<p class="mui-ellipsis"><span class="u_cost">100</span> 元/天</p>
+			<p class="mui-ellipsis">朝阳区 距您2334km</p>
+		</div>
+	</div>
+	<div class="infobar">
+		<p class="mui-ellipsis i_title"><%=title%></p>
+		<p class="mui-ellipsis-2"><%=description%></p>  
+	</div>
+	<ul class="photobar mt10">
+		<li><img src="images/demo/icon_msg_01.png"/></li>
+		<li><img src="images/demo/icon_msg_01.png"/></li>
+		<li><img src="images/demo/icon_msg_01.png"/></li>
+		<li><img src="images/demo/icon_msg_01.png"/></li>
+		<li><img src="images/demo/icon_msg_01.png"/></li>
+		<li><img src="images/demo/icon_msg_01.png"/></li>
+	</ul>
+	<div class="visitorbar mt05">
+		<div class="mui-pull-left v_ucion">
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/>
+			<img src="images/demo/icon_user_01.png"/> 
+			<img src="images/demo/icon_user_01.png"/>
+		</div>
+		<div class="mui-pull-right"><%=hits%>人看过 <span class="mui-icon mui-icon-eye"></span></div>
+	</div>
+	<div class="linkbar mt10">
+		<button class="mui-btn mui-btn-link hitsinfo"><span class="mui-icon iconfont icon-like-2"></span> <%=collects%></button>
+		<button class="mui-btn mui-btn-link hitsinfo ml10"><span class="mui-icon iconfont icon-comment"></span> <%=comments%></button>
+		<button class="mui-btn mui-btn-link hitsinfo ml10"><span class="mui-icon iconfont icon-share"></span></button>
+		<button class="mui-btn my-btn-im mui-pull-right">聊一聊</button>
+	</div>
+</script>
+<script src="js/mui.min.js"></script>
+<script src="js/mui.pullToRefresh.js"></script>
+<script src="js/mui.pullToRefresh.material.js"></script>
+<script src="js/arttmpl.js" ></script>
+<script src="js/api.js" ></script>
+<script src="js/filter.js" ></script>
+<script src="js/data_filter.js" ></script>
+<script>
+(function($) {
+	$.init({
+		swipeBack: false,
+	});
+	
+	//侧滑容器父节点
+	var offCanvasWrapper = $('#offCanvasWrapper');
+	
+	var pblist = document.getElementById("publishList");//列表数据容器
+	var pbpullrefresh = $('#pullrefresh');//上拉下拉容器
+	
+	var proListType = $('#proListType');//下拉弹窗容器
+	
+	
+	//阻尼系数
+	var deceleration = mui.os.ios?0.003:0.0009;
+	$('.mui-scroll-wrapper').scroll({ 
+		bounce: false,
+		indicators: true, //是否显示滚动条
+		deceleration:deceleration
+	});
+	
+	var page = 1,limit = 1;
+	var param = {};
+	
+	$.plusReady(function() {
+		if ($.os.plus) {
+			setTimeout(function() {
+				pbpullrefresh.pullToRefresh().pullDownLoading();
+			}, 1500);
+			  
+			/*//实现ios平台的侧滑关闭页面；
+			if ($.os.ios) {
+				offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
+					});
+				});
+				offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'close'
+					});
+				});
+			}*/
+		} else {
+			pbpullrefresh.pullToRefresh().pullDownLoading();
+		}
+	}); 
+	
+	$.ready(function() {
+		
+		//构建筛选器
+		var proFilter = new $.ListFilter();
+		proFilter.setData(proListFilterData);
+		
+		//循环初始化所有下拉刷新，上拉加载。
+		pbpullrefresh.pullToRefresh({
+			down: {
+				callback:refresh 
+			},
+			up: {
+				callback: loadmore
+			}
+		});
+		
+		//下拉刷新
+		function refresh(){
+			page = 1;
+			setTimeout(function() {
+				param.page = page;
+				param.limit = limit;
+				Api.getPublishList(param,function(data){ 
+					pblist.innerHTML = '';
+//			        while(pblist.firstChild)
+//			            pblist.removeChild(pblist.firstChild);
+					pblist.appendChild(createTpl(data));
+					page++;
+					$('#slider .mui-scroll-wrapper').scroll().scrollTo(0,0,100);//滚动回顶部
+				},function(result){
+					console.log(result.errmsg);  
+				});
+				
+				pbpullrefresh.pullToRefresh().endPullDownToRefresh();
+				pbpullrefresh.pullToRefresh().refresh(true); 
+			}, 1000);	
+		}
+		
+		//上拉加载更多
+		function loadmore(){
+			setTimeout(function() { 
+				param.page = page;
+				param.limit = limit;
+				Api.getPublishList(param,function(data){ 
+					if(data.length>0){
+						page++;
+						pblist.appendChild(createTpl(data));
+						pbpullrefresh.pullToRefresh().endPullUpToRefresh();
+					}else{
+						pbpullrefresh.pullToRefresh().endPullUpToRefresh(true);
+					}
+					console.log(JSON.stringify(data));
+				},function(result){
+					console.log(result.errmsg); 
+					pbpullrefresh.pullToRefresh().endPullUpToRefresh();
+				});
+			}, 1000); 
+		} 
+		
+		//取得模板
+		function createTpl(data){
+			var fragment = document.createDocumentFragment();
+			for(i = 0; i < data.length; i ++){
+				var li = document.createElement('li');
+				li.className = 'mui-table-view-cell';
+				li.innerHTML = template('publishListTpl',data[i]);
+				fragment.appendChild(li);
+				/*li.setAttribute('id',result[i].merchant_id);*/
+			}
+			return fragment;
+		};
+		
+		//主界面和侧滑菜单界面均支持区域滚动；
+		$('#offCanvasSideScroll').scroll();
+		$('#offCanvasContentScroll').scroll();
+		
+		//test
+		document.getElementById('offCanvasShow').addEventListener('tap', function() {
+			offCanvasWrapper.offCanvas('show');
+		});
+		document.getElementById('offCanvasHide').addEventListener('tap', function() {
+			offCanvasWrapper.offCanvas('close');
+			pbpullrefresh.pullToRefresh().pullDownLoading();
+		});
+		
+	});
+	
+	
+})(mui); 
+ 
+</script>
+</body>
+</html>

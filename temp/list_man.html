@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>名片列表</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	html,.mui-content{ background-color: #EEEEEE;}
+    	header~.myfilter{position: fixed;top: 44px;z-index: 11;left: 0;}
+		header~.myfilter~.mui-content{padding-top: 83px;}
+		.mui-popover {
+			width: 200px;
+			height: 200px;
+		}
+		.btnbox{
+			background-color: #FFFFFF;
+			border-bottom: 1px solid #dbdbdb;
+			padding: 10px 10px 2px 10px;
+		}	 
+		.demoimg img{width: 100%;} 
+		
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title mynav-title" ><a href="#catePopover">摄影师</a></h1>
+</header>
+<nav class="my-barnav myfilter">
+	<a class="my-barnav-item" href="#Popover_servicetype">服务类型</a>
+	<a class="my-barnav-item">地区</a>
+	<a class="my-barnav-item" href="#Popover_style">风格</a> 
+	<a class="my-barnav-item" href="#Popover_tztype">帖子类型</a> 
+</nav>
+<div class="mui-content">
+	<div class="btnbox">
+		<button id='' class="mui-btn mui-btn-block my-btn-swichmap">
+			<span class="mui-pull-left mui-icon mui-icon-bars"></span>
+			<span class="mui-pull-left ml5">切换列表模式</span>
+			<span class="mui-pull-right">结果300条</span>
+		</button>
+	</div>
+</div>
+<!--下拉弹窗-->
+<div id="catePopover" class="mui-popover ">
+	<div class="mui-popover-arrow"></div>
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul class="mui-table-view" id="aa">
+			</ul>
+		</div>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/data_filter.js" type="text/javascript" charset="utf-8"></script>
+<script>
+(function($, doc) { 
+/*	$.init({
+		subpages:[{
+			url:'list_man_sub.html',
+			id:'list_man_sub',
+			styles:{
+				top: '145px',
+				bottom: '0px',
+			}
+		}]
+	});*/
+//	mui('.mui-scroll-wrapper').scroll();
+	
+	//构建下拉弹窗
+	var buffer = [];
+	jobData.forEach(function(item) {
+		if (item !== null && item !== undefined) {
+			buffer.push('<li class="mui-table-view-cell"><a data=' + item.value +'>' + (item.text || item) + '</a></li>');
+		}
+	});
+	document.getElementById("aa").innerHTML = buffer.join('');
+	
+	mui('.mui-table-view-cell').on('tap','a',function(e){
+		
+		//获取id
+  		var id = this.getAttribute("data");
+		//console.log(id);
+	});
+	
+	$('body').on('shown', '.mui-popover', function(e) {
+		console.log('shown', e.detail.id);//detail为当前popover元素
+	});
+	$('body').on('hidden', '.mui-popover', function(e) {
+		console.log('hidden', e.detail.id);//detail为当前popover元素
+	});
+	
+}(mui, document));	
+</script>
+</body>
+</html>

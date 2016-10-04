@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的资料</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <link href="css/mui.picker.min.css" rel="stylesheet" />
+	<link href="css/mui.poppicker.min.css" rel="stylesheet" />
+    <style type="text/css">
+    	html,.mui-content{background-color: #F1F1F1;}
+    	.input_lable{}
+    	.input_box{
+    		font-size: 15px;
+    		color: #777777;
+    		
+    	}
+    	.input_box.input_box_bg{
+    		background: url(images/icon_inputbg.gif) no-repeat;
+    		background-position: right bottom;
+    		background-size: 10px;
+    		padding-right: 20px;
+    	}
+    	.usericon{
+    		width: 60px;
+    		height: 60px;
+    		border-radius: 30px;
+    		margin-right: 20px;
+    	}
+    	.usericon_lable{
+    		line-height: 60px;
+    	}
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">我的资料</h1>
+    <button class="mui-btn mui-btn-link mui-pull-right" id="saveBtn">保存</button>
+</header>
+<div class="mui-content">
+	
+	<ul class="mui-table-view mt0">
+		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="input_lable usericon_lable">头像</span><img src="images/demo/icon_msg_01.png" class="mui-pull-right usericon"/></a></li>
+		<li class="mui-table-view-cell"><a class="" id="nicknameBtn"><span class="input_lable">昵称</span> <span class="mui-pull-right input_box input_box_bg" id="nicknameBox">木可</span></a></li>
+		<li class="mui-table-view-cell"><a class="" id="sexBtn">
+			<span class="input_lable">性别</span> 
+			<span class="mui-pull-right input_box input_box_bg" id="sexBoxText" data="1">选择您的性别</span>
+			<input type="hidden" name="sexBox" id="sexBox" value="" />
+		</a></li>
+		<li class="mui-table-view-cell"><a class="" id="jobBtn"><span class="input_lable">职业</span> <span class="mui-pull-right input_box input_box_bg" id="jobBox">请选择您的职业</span></a></li>
+		<li class="mui-table-view-cell"><a class="" id="cityBtn"><span class="input_lable">地区</span> <span class="mui-pull-right input_box input_box_bg" id="cityBox" data="">北京 朝阳区</span></a></li>
+	</ul>
+	
+	<h5 class="mui-content-padded">账户信息<span class="mui-pull-right">暂不支持更改手机号</span></h5>
+	
+	<ul class="mui-table-view mt0">
+		<li class="mui-table-view-cell"><span class="input_lable">手机号码</span><span class="mui-pull-right input_box" id="mobileBox">18620081053</span></li>
+	</ul>	
+	
+<script id="userInfoTpl" type="text/html">
+	
+</script>	
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/api.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="tpl/build/template.js" ></script>
+<script src="js/mui.picker.min.js"></script>
+<script src="js/mui.poppicker.min.js"></script>
+<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+(function($, doc) {
+	function plusReady(){
+		plus.nativeUI.closeWaiting();
+		
+		var nicknameBtn = doc.getElementById('nicknameBtn');
+		var sexBtn = doc.getElementById('sexBtn');
+		var jobBtn = doc.getElementById('jobBtn');
+		var cityBtn = doc.getElementById('cityBtn');
+		var saveBtn = doc.getElementById('saveBtn');
+		
+		var nicknameBox = doc.getElementById('nicknameBox');
+		var sexBox = doc.getElementById('sexBox');
+		var sexBoxText = doc.getElementById('sexBoxText');
+		var jobBox = doc.getElementById('jobBox');
+		var cityBox = doc.getElementById('cityBox');
+		var mobileBox = doc.getElementById('mobileBox');
+		
+		var isModify = false;
+		
+		//获取用户信息
+		var userId = App.getUserId();
+		var param = {user_id:userId};
+		Api.getUserInfo(param,function(result){
+			var user = result || {};
+			nicknameBox.innerText = user.nickname;
+			sexBox.value = user.sex;
+			if(user.sex=='0'){
+				sexBoxText.innerText = '女神';
+			}else{
+				sexBoxText.innerText = '男神';
+			}
+			
+			mobileBox.innerText = user.mobile;
+			
+			
+			
+			mui.currentWebview.show();
+		});
+		
+		//监听按钮-昵称
+		nicknameBtn.addEventListener('tap',function(event){
+			old = nicknameBox.innerText;
+			event.detail.gesture.preventDefault();
+			mui.prompt('请输入您的昵称', old, '影人根据地', ['取消', '确定'], function(e) {
+				if (e.index == 1 && e.value != "") {
+					nicknameBox.innerText = e.value;
+					isModify = true;
+				}
+			})
+		},false);
+		
+		//监听按钮-性别
+		var sexPicker = new $.PopPicker();
+		sexPicker.setData([{
+			value: '1',
+			text: '男神'
+		}, {
+			value: '0',
+			text: '女神'
+		}]); 
+		sexBtn.addEventListener('tap', function(event) {
+			sex_old = sexBox.value;
+			sexPicker.pickers[0].setSelectedValue(sex_old);
+			sexPicker.show(function(items) {
+				var sexSeleted = items[0];
+				sexBox.value = sexSeleted.value;
+				sexBoxText.innerText = sexSeleted.text;
+				//
+				if(sexSeleted.value != sex_old){
+					isModify = true;
+				}
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}, false);
+		
+		
+		//监听按钮-职业
+		jobBtn.addEventListener('tap',function(event){
+			event.detail.gesture.preventDefault();
+			mui.prompt('请输入您的职业', jobBox.innerText, '影人根据地', ['取消', '确定'], function(e) {
+				if (e.index == 1) {
+					jobBox.innerText = e.value;
+					//console.log();
+				}
+			})
+		},false);
+		
+		
+		//监听按钮-地区
+		var cityPicker = new $.PopPicker({
+			layer: 3
+		});
+		cityPicker.setData(cityData3);
+		var showCityPickerButton = doc.getElementById('showCityPicker3');
+		cityBtn.addEventListener('tap', function(event) {
+//			cityPicker.pickers[0].setSelectedValue('440000');
+//			cityPicker.pickers[1].setSelectedValue('1');
+//			cityPicker.pickers[1].setSelectedValue('1');
+			cityPicker.show(function(items) {
+				cityBox.innerText = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+				console.log(JSON.stringify(items[0]));
+				console.log(JSON.stringify(items[1]));
+				console.log(JSON.stringify(items[2]));
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}, false);
+		
+		//监听按钮-保存设置
+		saveBtn.addEventListener('tap',function(event){
+			if(!isModify){
+				alert('您还未做任何修改');
+			}else{
+				$.confirm('您确定保存设置吗？','影人根据地',['确定保存','返回修改'],function(e){
+					if (e.index == 0) {
+						var updataInfo = {};
+						updataInfo.user_id = userId;
+						updataInfo.nickname = nicknameBox.innerText;
+						updataInfo.sex = sexBox.value;
+						
+						console.log(JSON.stringify(updataInfo));
+						//保存资料
+						Api.updateInfo(updataInfo,function(result){
+							isModify = false;
+							
+							//保存用户信息
+							state = {}; 
+							state.userId = result.userInfo.user_id;
+							state.userInfo = result.userInfo;
+							App.setState(state);
+							
+							var ws = plus.webview.currentWebview();//获取当前窗体
+							ws.opener().reload();//刷新上一个窗体
+							plus.webview.close(ws,'slide-out-bottom',600);//关闭当前页面
+							
+							$.toast('修改资料成功');
+							
+						},function(result){
+							//console.log(JSON.stringify(result));
+							alert(result.errmsg);
+						});
+						
+						//$.toast('正在开发中..');
+					} 
+				});
+			}
+		},false);
+		
+		//重写返回事件
+		var old_back = $.back;
+		$.back = function(){
+			if(!isModify){
+				old_back();
+			}else{
+				var btn = ["确定离开","返回修改"];
+				$.confirm('确认不保存离开当前窗口吗？','影人根据地',btn,function(e){
+				    if(e.index==0){
+				    	//执行mui封装好的窗口关闭逻辑；
+				    	old_back();
+				    }
+				});
+			}
+		}
+		
+	}
+	if(window.plus){
+		plusReady();
+	}else{
+		document.addEventListener("plusready",plusReady,false);
+	}	
+})(mui, document);
+</script>
+</body>
+</html>

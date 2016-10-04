@@ -1,0 +1,673 @@
+{
+  "home.html": {
+    "resources": [
+      "images/icon_icon03.png",
+      "images/icon_icon08.png",
+      "images/icon_icon06.png",
+      "images/icon_icon10.png",
+      "fonts/mui.ttf",
+      "images/icon_icon07.png",
+      "images/icon_icon02.png",
+      "css/style.css",
+      "images/icon_icon01.png",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/icon_icon09.png",
+      "images/icon_icon04.png",
+      "images/demo/runpic1.jpg",
+      "images/icon_icon05.png",
+      "js/app.js",
+      "css/style.min.css",
+      "js/app.min.js",
+      "js/data_filter.min.js",
+      "js/api.min.js"
+    ],
+    "refer": [
+      "schedule_main.html",
+      "publish_main.html",
+      "message_main.html",
+      "cameraman_list.html",
+      "login.html",
+      "equipment_list.html",
+      "camerateam_list.html",
+      "user_center.html",
+      "publish_act.html",
+      "schedule_search.html",
+      "list_man.html",
+      "list_demand.html",
+      "list_pro.html",
+      "temp/pullrefresh_with_tab.html",
+      "list.html",
+      "publist_main.html",
+      "temp/pullrefresh_main.html",
+      "list_main.html",
+      "list_detail.html"
+    ]
+  },
+  "schedule_calendar.html": {
+    "resources": [
+      "js/MCalendar.js",
+      "css/MCalendar.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/MCalendar.min.css",
+      "js/MCalendar.min.js"
+    ],
+    "refer": []
+  },
+  "schedule_main.html": {
+    "resources": [
+      "schedule_calendar.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css"
+    ],
+    "refer": [
+      "schedule_notice.html",
+      "schedule_calendar.html"
+    ]
+  },
+  "publish_main.html": {
+    "resources": [
+      "images/button_publish_03.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "images/button_publish_01.png",
+      "css/mui.min.css",
+      "images/button_publish_04.png",
+      "images/button_publish_02.png",
+      "css/style.css",
+      "css/style.min.css"
+    ],
+    "refer": [
+      "publish_trade.html",
+      "publish_works.html",
+      "publish_act.html",
+      "publish_demand.html"
+    ]
+  },
+  "publish_trade.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/demo/userinfobar.jpg",
+      "images/btnbg_01.png",
+      "images/demo/publish_trade.jpg",
+      "images/btnbg_02.png",
+      "images/icon_upload.jpg",
+      "js/app.js",
+      "js/api.js",
+      "js/until.js",
+      "images/demo/usericon_01.png",
+      "images/icon_inputbg.gif",
+      "images/icon_camera.png",
+      "js/arttmpl.js",
+      "css/upload-ui.css",
+      "js/upload-ui.js",
+      "images/iconfont-tianjia.png",
+      "js/canvasResize.js",
+      "js/exif.js",
+      "js/binaryajax.js",
+      "js/data_picker.js",
+      "js/mui.picker.min.js",
+      "css/mui.picker.min.css",
+      "tpl/build/template.js",
+      "css/upload-ui.min.css",
+      "css/style.min.css",
+      "js/canvasResize.min.js",
+      "js/upload-ui.min.js",
+      "js/binaryajax.min.js",
+      "js/app.min.js",
+      "js/api.min.js",
+      "js/exif.min.js",
+      "js/until.min.js",
+      "js/data_picker.min.js"
+    ],
+    "refer": []
+  },
+  "message_main.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "message_msg.html"
+    ],
+    "refer": [
+      "message_notice.html",
+      "message_msg.html"
+    ]
+  },
+  "message_notice.html": {
+    "resources": [
+      "images/demo/icon_user_01.png",
+      "images/demo/icon_msg_01.png",
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": []
+  },
+  "publish_works.html": {
+    "resources": [
+      "images/demo/userinfobar.jpg",
+      "images/demo/publish_works.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "js/exif.js",
+      "images/icon_upload.jpg",
+      "js/app.js",
+      "js/canvasResize.js",
+      "js/binaryajax.js",
+      "images/demo/usericon_01.png",
+      "js/api.js",
+      "images/icon_camera.png",
+      "js/arttmpl.js",
+      "tpl/build/template.js",
+      "js/until.js",
+      "css/upload-ui.css",
+      "js/upload-ui.js",
+      "images/iconfont-tianjia.png",
+      "css/style.min.css",
+      "css/upload-ui.min.css",
+      "js/app.min.js",
+      "js/api.min.js",
+      "js/upload-ui.min.js",
+      "js/until.min.js",
+      "js/binaryajax.min.js",
+      "js/exif.min.js",
+      "js/canvasResize.min.js"
+    ],
+    "refer": []
+  },
+  "publish_act.html": {
+    "resources": [
+      "images/demo/userinfobar.jpg",
+      "images/demo/publish_act.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "js/exif.js",
+      "js/app.js",
+      "js/mui.picker.min.js",
+      "js/binaryajax.js",
+      "js/canvasResize.js",
+      "js/data_picker.js",
+      "images/icon_upload.jpg",
+      "images/demo/usericon_01.png",
+      "images/icon_inputbg.gif",
+      "css/mui.picker.min.css",
+      "js/api.js",
+      "images/icon_camera.png",
+      "js/arttmpl.js",
+      "tpl/build/template.js",
+      "js/until.js",
+      "js/upload-ui.js",
+      "images/iconfont-tianjia.png",
+      "css/upload-ui.css",
+      "css/upload-ui.min.css",
+      "css/style.min.css",
+      "js/canvasResize.min.js",
+      "js/upload-ui.min.js",
+      "js/binaryajax.min.js",
+      "js/app.min.js",
+      "js/api.min.js",
+      "js/data_picker.min.js",
+      "js/exif.min.js",
+      "js/until.min.js"
+    ],
+    "refer": []
+  },
+  "publish_demand.html": {
+    "resources": [
+      "images/demo/userinfobar.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/demo/publish_demand.jpg",
+      "js/exif.js",
+      "js/app.js",
+      "js/until.js",
+      "js/binaryajax.js",
+      "js/canvasResize.js",
+      "images/icon_upload.jpg",
+      "tpl/build/template.js",
+      "js/upload-ui.js",
+      "css/upload-ui.css",
+      "images/demo/usericon_01.png",
+      "js/api.js",
+      "images/icon_camera.png",
+      "images/iconfont-tianjia.png",
+      "css/upload-ui.min.css",
+      "css/style.min.css",
+      "js/canvasResize.min.js",
+      "js/upload-ui.min.js",
+      "js/binaryajax.min.js",
+      "js/app.min.js",
+      "js/api.min.js",
+      "js/exif.min.js",
+      "js/until.min.js"
+    ],
+    "refer": []
+  },
+  "cameraman_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/btnbg_nav_01.png",
+      "images/demo/cameraman_list_item_02.jpg",
+      "images/demo/cameraman_list_item_01.jpg",
+      "cameraman_detail.html"
+    ],
+    "refer": [
+      "cameraman_detail.html"
+    ]
+  },
+  "cameraman_detail.html": {
+    "resources": [
+      "images/demo/userinfobar.jpg",
+      "cameraman_list.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/demo/cameraman_detail_01.jpg",
+      "images/demo/cameraman_detail_04.jpg",
+      "images/demo/cameraman_detail_08.jpg",
+      "images/demo/cameraman_detail_02.jpg",
+      "images/demo/cameraman_detail_07.jpg",
+      "images/demo/cameraman_detail_06.jpg",
+      "images/demo/cameraman_detail_05.jpg",
+      "images/demo/cameraman_detail_03.jpg",
+      "images/demo/comment.jpg"
+    ],
+    "refer": [
+      "cameraman_list.html"
+    ]
+  },
+  "login.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "js/app.js",
+      "js/api.js",
+      "js/app.min.js",
+      "js/api.min.js",
+      "css/style.min.css"
+    ],
+    "refer": [
+      "register.html"
+    ]
+  },
+  "register.html": {
+    "refer": [
+      "register_pwd.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/until.min.js",
+      "js/app.min.js",
+      "js/api.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css"
+    ]
+  },
+  "equipment_list.html": {
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "images/demo/cameraman_list_item_02.jpg",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/demo/cameraman_list_item_01.jpg"
+    ],
+    "refer": []
+  },
+  "camerateam_list.html": {
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "images/demo/cameraman_list_item_02.jpg",
+      "images/demo/cameraman_list_item_01.jpg"
+    ],
+    "refer": []
+  },
+  "user_center.html": {
+    "resources": [
+      "images/demo/usericon_01.png",
+      "images/icon_camera.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "js/app.js",
+      "js/arttmpl.js",
+      "tpl/build/template.js",
+      "js/app.min.js",
+      "css/style.min.css"
+    ],
+    "refer": [
+      "login.html",
+      "user_info.html"
+    ]
+  },
+  "schedule_search.html": {
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "js/MCalendar.js",
+      "css/MCalendar.css"
+    ],
+    "refer": []
+  },
+  "list_man.html": {
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "js/data_filter.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "list_man_sub.html",
+      "css/style.min.css"
+    ],
+    "refer": [
+      "list_man_sub.html"
+    ]
+  },
+  "list_man_sub.html": {
+    "resources": [
+      "js/arttmpl.js",
+      "images/demo/cameraman_list_item_01.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "cameraman_detail.html"
+    ],
+    "refer": [
+      "cameraman_detail.html"
+    ]
+  },
+  "list_demand.html": {
+    "resources": [
+      "list_demand_subpag.html",
+      "images/btnbg_nav_01.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css"
+    ],
+    "refer": [
+      "list_demand_subpag.html"
+    ]
+  },
+  "list_demand_subpag.html": {
+    "resources": [
+      "images/demo/cameraman_list_item_01.jpg",
+      "js/arttmpl.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/style.css",
+      "fonts/mui.ttf",
+      "cameraman_detail.html"
+    ],
+    "refer": [
+      "cameraman_detail.html"
+    ]
+  },
+  "list_pro.html": {
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "images/demo/cameraman_list_item_02.jpg",
+      "images/demo/cameraman_list_item_01.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "css/style.css",
+      "list_pro_sub.html",
+      "js/mui.pullToRefresh.js",
+      "js/mui.pullToRefresh.material.js",
+      "css/iconfont.css",
+      "js/api.js",
+      "js/arttmpl.js",
+      "images/demo/cameraman_detail_02.jpg",
+      "images/demo/icon_msg_01.png",
+      "fonts/iconfont.ttf",
+      "images/icon_camera.png",
+      "images/demo/icon_user_01.png",
+      "css/iconfont.min.css",
+      "css/style.min.css"
+    ],
+    "refer": [
+      "list_pro_sub.html",
+      "offcanvas-drag-left-plus-menu.html"
+    ]
+  },
+  "list_pro_sub.html": {
+    "resources": [
+      "js/arttmpl.js",
+      "images/demo/cameraman_list_item_01.jpg",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/style.css",
+      "cameraman_detail.html",
+      "js/api.js"
+    ],
+    "refer": [
+      "cameraman_detail.html"
+    ]
+  },
+  "offcanvas-drag-left-plus-menu.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "message_msg.html": {
+    "resources": [
+      "images/demo/icon_user_01.png",
+      "images/demo/icon_msg_01.png",
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": []
+  },
+  "temp/pullrefresh_with_tab.html": {
+    "resources": [
+      "js/mui.pullToRefresh.js",
+      "js/mui.min.js",
+      "js/mui.pullToRefresh.material.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": []
+  },
+  "user_info.html": {
+    "href": "user_info.html",
+    "resources": [
+      "css/mui.min.css",
+      "images/icon_inputbg.gif",
+      "js/mui.min.js",
+      "images/demo/icon_msg_01.png",
+      "js/mui.picker.min.js",
+      "js/api.min.js",
+      "css/mui.poppicker.min.css",
+      "css/mui.picker.min.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "register_pwd.html": {
+    "href": "register_pwd.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/app.min.js",
+      "js/api.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css"
+    ],
+    "refer": [
+      "user_center.html"
+    ],
+    "priority": 0
+  },
+  "schedule_notice.html": {
+    "href": "schedule_notice.html",
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "offcanvas-drag-left-plus-menu.html"
+    ]
+  },
+  "publist_main.html": {
+    "resources": [
+      "publist_list.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "publist_list.html",
+      "offcanvas-drag-left-plus-menu.html",
+      "menu_filter_list.html"
+    ]
+  },
+  "temp/pullrefresh_main.html": {
+    "resources": [
+      "temp/pullrefresh_sub.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "temp/pullrefresh_sub.html"
+    ]
+  },
+  "menu_filter_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "publist_list.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "tpl/build/template.js",
+      "src/tmp/js/arttmpl.js",
+      "images/demo/icon_user_01.png",
+      "images/demo/icon_msg_01.png",
+      "images/icon_camera.png",
+      "css/style.min.css",
+      "css/iconfont.min.css",
+      "fonts/iconfont.ttf"
+    ]
+  },
+  "list_list.html": {
+    "resources": [
+      "images/demo/icon_user_01.png",
+      "css/iconfont.min.css",
+      "tpl/build/template.js",
+      "images/demo/icon_msg_01.png",
+      "fonts/iconfont.ttf",
+      "images/icon_camera.png",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css",
+      "css/mui.min.css",
+      "js/until.min.js",
+      "js/api.min.js",
+      "js/md5.min.js",
+      "images/60x60.gif"
+    ]
+  },
+  "list_main.html": {
+    "resources": [
+      "list_list.html",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css",
+      "css/mui.min.css",
+      "js/data_filter.min.js"
+    ],
+    "refer": [
+      "list_list.html",
+      "menu_filter_list.html",
+      "list_filter.html",
+      "map.html"
+    ]
+  },
+  "list_filter.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "list_detail.html": {
+    "resources": [
+      "images/demo/cameraman_detail_04.jpg",
+      "images/demo/userinfobar.jpg",
+      "images/demo/cameraman_detail_08.jpg",
+      "images/demo/cameraman_detail_01.jpg",
+      "images/demo/cameraman_detail_02.jpg",
+      "images/demo/cameraman_detail_07.jpg",
+      "images/demo/cameraman_detail_06.jpg",
+      "images/demo/cameraman_detail_05.jpg",
+      "images/demo/comment.jpg",
+      "images/demo/cameraman_detail_03.jpg",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css",
+      "css/mui.min.css",
+      "js/api.min.js",
+      "tpl/build/template.js",
+      "images/demo/usericon_01.png",
+      "images/icon_camera.png",
+      "js/until.min.js",
+      "images/60x60.gif",
+      "js/md5.min.js"
+    ]
+  },
+  "map.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/style.min.css",
+      "css/mui.min.css"
+    ]
+  }
+}

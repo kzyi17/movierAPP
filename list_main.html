@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	html,.mui-content{ background-color: #EEEEEE;}
+    	.mui-bar-nav ~ .mui-content .mui-pull-top-pocket{
+		  	top: 145px !important;
+		}
+    	.btnbox{
+			background-color: #FFFFFF;
+			border-bottom: 1px solid #dbdbdb;
+			padding: 10px 10px 2px 10px;
+		}	
+    </style>
+</head>
+<body>
+<header class="mybar mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title" id="pageTitle">列表</h1>
+</header>	
+<div class="mui-content">
+	<nav class="my-barnav myfilter" id="filterbar">
+	</nav>
+	<div class="btnbox">
+		<button id='BtnMapMode' class="mui-btn mui-btn-block my-btn-swichmap" type="button">
+			<span class="mui-pull-left mui-icon mui-icon-bars"></span>
+			<span class="mui-pull-left ml5">切换地图模式</span>
+			<span class="mui-pull-right">结果3000条</span>
+		</button> 
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript">
+(function($) {
+	var menu = null;
+	var mask = null;
+	var showMenu = false;
+	var listView = null;
+	
+	document.getElementById("BtnMapMode").addEventListener("tap",function () {
+		$.openWindow({
+			url:"map.html",
+		    id:"map",
+		    waiting:{
+		      autoShow:true,//自动显示等待框，默认为true
+		      title:'正在加载...',//等待对话框上显示的提示内容
+		    }
+		});
+	});
+	
+	$.plusReady(function(){
+		$.init({
+			swipeBack: false,
+			beforeback: back,
+			subpages:[{
+				id:'list_list',
+				url:'list_list.html',
+				styles:{
+					top: '145px',
+					bottom: '0px',
+				}
+			}]
+		});
+		
+		setTimeout(function () {
+			listView = plus.webview.getWebviewById('list_list');
+			
+			//预加载侧滑菜单
+			menu = $.preload({
+			    id: 'list_filter',
+				url: 'list_filter.html',
+				styles: {
+					left: "100%",
+					width: '60%',
+					zindex: 9997
+				}
+			});   
+			//预加载遮罩层
+			mask = $.preload({
+				id: 'mask',
+				styles: {
+					background:"transparent",
+					left: "0%",
+					width: '100%',
+					zindex: 9996,
+					mask: 'rgba(0,0,0,.7)'
+				}
+			});
+		},300);
+		
+		
+		//在android4.4中的swipe事件，需要preventDefault一下，否则触发不正常
+		//故，在dragleft，dragright中preventDefault
+		window.addEventListener('dragright', function(e) {
+			e.detail.gesture.preventDefault();
+		});
+		window.addEventListener('dragleft', function(e) {
+			e.detail.gesture.preventDefault();
+		});
+		//主界面向右滑动，若菜单已显示，则关闭菜单；否则，不做任何操作；
+		window.addEventListener("swiperight", closeMenu);
+		 //menu页面向右滑动，关闭菜单；
+		window.addEventListener("menu:swiperight", closeMenu);
+	
+		//监听列表初始化
+		window.addEventListener("pageInit", pageInit);
+	});
+	
+	
+	//列表及筛选器初始化
+	function pageInit(event){
+		var extrasData = event.detail;
+		
+		//更新标题
+		document.getElementById("pageTitle").innerText = extrasData.pagetitle;
+		
+		//初始化筛选项
+		var filterElement = document.getElementById("filterbar");
+		filterElement.innerHTML='';
+		var filterItems = buildFilterElement(extrasData.filter);
+		filterElement.appendChild(filterItems);
+		
+		//初始化列表
+		var listType = extrasData.listtype;
+		$.fire(listView,'listInit',{
+	    	listtype:listType,
+	 	}); 
+		
+	}
+	
+	
+	/**
+	 * 构建筛选项
+	 * @param {Object} filterData
+	 */
+	function buildFilterElement(filterData){
+		var fragment = document.createDocumentFragment();
+		filterData.forEach(function(item){
+			var a = document.createElement('a');
+			a.className = 'my-barnav-item';
+			a.innerText = item.text;
+			a.addEventListener('tap',function(event){
+				//触发侧滑菜单中筛选项初始化
+				$.fire(menu,"filterInit",{
+					filter:item.children,
+					type:item.type
+				});
+				openMenu();
+			},false);
+			fragment.appendChild(a);
+		});
+		return fragment;
+	}
+	
+	/*
+	 * 显示菜单菜单
+	 */
+	function openMenu() {
+		if (!showMenu) {
+			//解决android 4.4以下版本webview移动时，导致fixed定位元素错乱的bug;
+			if ($.os.android && parseFloat($.os.version) < 4.4) {
+				document.querySelector("header.mui-bar").style.position = "static";
+				//同时需要修改以下.mui-contnt的padding-top，否则会多出空白；
+				document.querySelector(".mui-bar-nav~.mui-content").style.paddingTop = "0px";
+			}
+			
+			//显示完毕后，根据不同动画效果移动窗体；
+			menu.show('none', 0, function() {
+				menu.setStyle({
+					left: '40%',
+					transition: {
+						duration: 150
+					}
+				});
+			});
+			
+			//显示遮罩图
+			mask.show('none', 0, function() {
+				mask.addEventListener("maskClick",function(){ 
+				    closeMenu(); 
+				},false);
+			});
+			
+			showMenu = true;
+			//console.log('open menu');
+		}
+	}
+	
+	
+	/**
+	 * 关闭侧滑菜单(业务部分)
+	 */
+	function closeMenu() {
+		if (showMenu) {
+			//解决android 4.4以下版本webview移动时，导致fixed定位元素错乱的bug;
+			if ($.os.android && parseFloat($.os.version) < 4.4) {
+				document.querySelector("header.mui-bar").style.position = "fixed";
+				//同时需要修改以下.mui-contnt的padding-top，否则会多出空白；
+				document.querySelector(".mui-bar-nav~.mui-content").style.paddingTop = "44px";
+			}
+			
+			//主窗体开始侧滑；
+			menu.setStyle({
+				left: '100%',
+				transition: {
+					duration: 150
+				} 
+			});
+
+			//等窗体动画结束后，隐藏菜单webview，节省资源；
+			setTimeout(function() {
+				menu.hide();
+				mask.hide();
+			}, 300);
+			showMenu = false;
+			//console.log('close menu');
+		}
+	}
+	
+	//返回事件
+	function back() {
+		if (showMenu) {
+			//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
+			closeMenu();
+			return false;
+		} else {
+			return true;
+		}
+	}	
+	
+	
+}(mui));	
+</script>
+</body>
+</html>

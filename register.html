@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	.mui-content-padded {
+			margin-top: 25px;
+		}
+    	.ui-register-from{margin-top: 30px;}
+    	#mobile{text-align: left;background-color: rgba(0,0,0,.1);border-radius: 6px;border: 0;}
+    	#code{width: 60%;text-align: left;}
+    	#btn_code{width: 36%;}
+    	@media (min-width: 400px){
+    		#code{width: auto;}
+    		#btn_code{width: auto;}
+    	}
+    	.remark{text-align: center; color: #AAAAAA;}
+    	.remark span{color: #abc047;}
+    	#btn_register{padding:10px 0;}
+    </style>
+</head>
+<body>
+<header class="mybar2 mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">注册账号</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-content-padded ui-register-from">
+		<div class="mui-input-row">
+			<input id='mobile' type="number" class="mui-input-clear" placeholder="手机号码">
+		</div>
+		<div class="mui-input-row">
+			<input id='code' type="search" class="" placeholder="验证码" >
+			<button id="btn_code" type="button" class="mui-btn my-btn-cyan" disabled>获取验证码</button>
+		</div>
+		<button id='btn_register' class="mui-btn mui-btn-block my-btn-cyan" disabled>下一步</button>
+	</div> 
+	<div class="mui-content-padded remark">
+		点击下一步代表您已阅读
+		<span>用户使用协议</span>
+	</div>
+	
+</div> 
+
+<script src="js/mui.min.js"></script>
+<script src="js/until.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/api.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/app.min.js"></script>
+<script type="text/javascript" charset="UTF-8">
+(function($, doc) {
+	var moblieBox = doc.getElementById('mobile');
+	var codeBox = doc.getElementById('code');
+	var codeButton = doc.getElementById('btn_code');
+	var registerBtn = doc.getElementById('btn_register');
+	var smsInterval=60;
+	var second = smsInterval,timer;
+	var position;
+	
+	$.plusReady(function(){
+		plus.geolocation.getCurrentPosition( function(p){
+			console.log(JSON.stringify(p));
+			position = p.coords;//获取地理坐标信息；
+			
+		}, function ( e ) {
+			console.log( "获取定位位置信息失败："+e.message );
+		},{geocode:true,provider:'amap'}); 
+	});
+	
+	//监听账号输入框输入时间
+	moblieBox.addEventListener('input', function() {
+		if(isMobile(this.value)){
+			codeButton.disabled = false;
+			registerBtn.disabled = false;
+		}else{
+			codeButton.disabled = true;
+			registerBtn.disabled = true;
+		}
+	}, false);
+	
+	//监听获取验证码按钮
+	codeButton.addEventListener('tap', function(event) {
+		var param = {mobile:moblieBox.value};
+		Api.getSmsCode(param,function(result){
+			secondCount();
+			$.toast("验证码已成功发送");
+		},function(result){
+			$.toast(result.errmsg);
+		});
+	}, false);
+	
+	//监听“下一步”按钮
+	registerBtn.addEventListener('tap', function(event) {
+		if(moblieBox.value=='' || code.value==''){
+			$.toast('用户、验证码不能为空！');
+		}else{
+			registerBtn.disabled = true;
+			var param = {mobile: moblieBox.value,code:codeBox.value,userPosition:position};
+			Api.register(param,function(result){
+				//保存用户信息
+				var state = {};
+				state.userId = result.userInfo.user_id;
+				state.userInfo = result.userInfo;
+				state.mapId = result.userInfo.mapID;
+				App.setState(state);
+				
+				//下一步跳转
+				$.openWindow({
+					url: 'register_pwd.html',
+					id: 'register_pwd',
+					show: {
+						aniShow: 'pop-in'
+					},
+					styles: {
+						popGesture: 'hide'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+				
+			},function(result){
+				$.toast(result.errmsg);
+				registerBtn.disabled = false;
+			})
+		}
+	}, false); 
+	
+	//验证码按钮定时器
+	function secondCount(){
+		if (second == 1) {
+			clearTimeout(timer);
+			codeButton.innerText = "获取验证码";
+			codeButton.disabled = false;
+			second = smsInterval;
+	    } else {
+	        second -= 1;
+	        codeButton.disabled = true;
+			codeButton.innerText = second + "秒后获取";
+	        timer = setTimeout(function () {
+	            secondCount(second);
+	        }, 1000);
+	    }
+	}
+	
+///////////////////////////////////////
+//	registerBtn.addEventListener('tap', function(event) {
+//		console.log(moblieBox.value);
+//		codeButton.disabled=true;
+//		$.openWindow({
+//			url: 'register_pwd.html',
+//			id: 'register_pwd',
+//			show: {
+//				aniShow: 'pop-in'
+//			},
+//			styles: {
+//				popGesture: 'hide'
+//			},
+//			waiting: {
+//				autoShow: false
+//			}
+//		});
+//	}, false);
+}(mui, document));  
+</script>
+</body>
+</html>

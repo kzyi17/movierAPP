@@ -1,0 +1,101 @@
+{
+  "user_info.html": {
+    "href": "user_info.html",
+    "resources": [
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "images/icon_inputbg.gif",
+      "js/mui.min.js",
+      "images/demo/icon_msg_01.png"
+    ],
+    "priority": 0
+  },
+  "user_center.html": {
+    "href": "user_center.html",
+    "resources": [],
+    "refer": [
+      "user_info.html"
+    ],
+    "priority": 0
+  },
+  "register_pwd.html": {
+    "href": "register_pwd.html",
+    "resources": [
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "user_center.html"
+    ],
+    "priority": 0
+  },
+  "register.html": {
+    "href": "register.html",
+    "resources": [
+      "css/mui.min.css",
+      "fonts/mui.ttf",
+      "js/mui.min.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "publish_act.html": {
+    "href": "publish_act.html",
+    "resources": [
+      "images/btnbg_nav_01.png"
+    ],
+    "priority": 4
+  },
+  "schedule_notice.html": {
+    "href": "schedule_notice.html",
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "fonts/mui.ttf"
+    ],
+    "priority": 7
+  },
+  "schedule_calendar.html": {
+    "href": "schedule_calendar.html",
+    "resources": [
+      "fonts/mui.ttf"
+    ],
+    "priority": 8
+  },
+  "publish_works.html": {
+    "href": "publish_works.html",
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "images/icon_inputbg.gif",
+      "js/binaryajax.min.js",
+      "js/exif.min.js",
+      "js/canvasResize.min.js"
+    ],
+    "priority": 10
+  },
+  "publish_demand.html": {
+    "href": "publish_demand.html",
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "images/icon_inputbg.gif"
+    ],
+    "priority": 11
+  },
+  "publish_trade.html": {
+    "href": "publish_trade.html",
+    "resources": [
+      "images/btnbg_nav_01.png"
+    ],
+    "priority": 12
+  },
+  "publish_main.html": {
+    "href": "publish_main.html",
+    "resources": [
+      "images/btnbg_nav_01.png",
+      "images/icon_inputbg.gif"
+    ],
+    "refer": [],
+    "priority": 9
+  }
+}

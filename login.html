@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	.mui-content-padded {
+			margin-top: 25px;
+		}
+    	.link-area {
+			display: block;
+			margin-top: 25px;
+			text-align: center;
+		}
+		.oauth-area {
+			position: absolute;
+			bottom: 20px;
+			left: 0px;
+			text-align: center;
+			width: 100%;
+			padding: 0px;
+			margin: 0px;
+		}
+		.oauth-area .oauth-btn {
+			display: inline-block;
+			width: 50px;
+			height: 50px;
+			background-size: 30px 30px;
+			background-position: center center;
+			background-repeat: no-repeat;
+			margin: 0px 20px;
+			/*-webkit-filter: grayscale(100%); */
+			border: solid 1px #ddd;
+			border-radius: 25px;
+		}
+		.oauth-area .oauth-btn:active {
+			border: solid 1px #aaa;
+		}
+		.login-logo{color: #abc047;font-size: 50px;text-align: center;line-height: 80px;padding-bottom: 60px;}
+    	#account,#password{border: 0;border-bottom: #abc047 solid 1px;border-radius:0;}
+    	.link-area,.link-area a{color: #abc047;}
+    	.link-area .spliter{margin-left: 20px;margin-right: 20px;}
+    </style>
+</head>
+<body>
+<header class="mybar2 mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+</header>
+<div class="mui-content">
+    <div id="" class="mui-content-padded login-logo">
+    	影人根据地
+    </div>
+	<form id="" class="mui-content-padded ui-login-form">
+		<input id='account' type="text" class="mui-input-clear mui-input" placeholder="账号" value="">
+		<input id='password' type="password" class="mui-input-clear mui-input" placeholder="密码" value="">
+	</form>
+    <div class="mui-content-padded">
+    	<button id='btn_login' class="mui-btn mui-btn-block my-btn-cyan">登录</button>
+		<div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
+    </div>
+    <div id="oauth-area" class="mui-content-padded oauth-area">
+
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/api.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+(function($, doc) {
+	$.init();
+	$.plusReady(function() {
+/*		//第三方登录
+		var auths = {};
+		var oauthArea = doc.querySelector('.oauth-area');
+		plus.oauth.getServices(function(services) {
+			for (var i in services) {
+				var service = services[i];
+				auths[service.id] = service;
+				var btn = document.createElement('div');
+				btn.setAttribute('class', 'oauth-btn');
+				btn.authId = service.id;
+				btn.style.backgroundImage = 'url("images/' + service.id + '.png")'
+					//alert(service.id);
+					//btn.innerText = service.description + "登录";
+				oauthArea.appendChild(btn);
+			}
+			$(oauthArea).on('tap', '.oauth-btn', function() {
+				var auth = auths[this.authId];
+				var waiting = plus.nativeUI.showWaiting();
+				auth.login(function() {
+					waiting.close();
+					plus.nativeUI.toast("登录认证成功");
+					//alert(JSON.stringify(auth.authResult));
+					auth.getUserInfo(function() {
+						plus.nativeUI.toast("获取用户信息成功");
+						//alert(JSON.stringify(auth.userInfo));
+						var name = auth.userInfo.nickname || auth.userInfo.name;
+						app.createState(name, function() {
+							toMain();
+						});
+					}, function(e) {
+						plus.nativeUI.toast("获取用户信息失败：" + e.message);
+					});
+				}, function(e) {
+					waiting.close();
+					plus.nativeUI.toast("登录认证失败：" + e.message);
+				});
+			});
+		}, function(e) {
+			oauthArea.style.display = 'none';
+			plus.nativeUI.toast("获取登录认证失败：" + e.message);
+		});*/
+	});
+	var regButton = doc.getElementById('reg');
+	regButton.addEventListener('tap', function(event) {
+		$.openWindow({
+			url: 'register.html',
+			id: 'register',
+			show: {
+				aniShow: 'pop-in'
+			},
+			styles: {
+				popGesture: 'hide'
+			},
+			waiting: {
+				autoShow: false
+			}
+		});
+	}, false);
+	
+	//监听登陆按钮
+	var loginBtn = doc.getElementById('btn_login');
+	var mobileBox = doc.getElementById('account');
+	var passwordBox = doc.getElementById('password');
+	loginBtn.addEventListener('tap', function(event) {
+		if(mobileBox.value=='' || passwordBox.value==''){
+			$.toast('请输入完整');
+			return;
+		}else{
+			loginBtn.disabled = true;
+			var loginInfo = {mobile:mobileBox.value,password:passwordBox.value};
+			Api.login(loginInfo,function(result){
+				//保存用户信息
+				state = {}; 
+				state.userId = result.userInfo.user_id;
+				state.userInfo = result.userInfo;
+				App.setState(state);
+				
+				//页面跳转
+				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
+				$.toast("登录成功");
+			},function(result){
+				$.toast(result.errmsg);
+				loginBtn.disabled = false; 
+			});
+		}
+	}, false);
+	
+	
+}(mui, document));
+</script>
+</body>
+</html>
