@@ -57,11 +57,19 @@
 					top: '145px',
 					bottom: '0px',
 				} 
-			}]
+			}],
+			/*preloadPages:[{
+		      	url:'nearbyMovier_map.html',
+		    	id:'nearbyMovier_map',//默认使用当前页面的url作为id
+//		      	styles:{},//窗口参数
+//		      	extras:{},//自定义扩展参数
+		      	//subpages:[{},{}]//预加载页面的子页面
+		   }]*/
 		});
 		
 		setTimeout(function () {
 			//listView = plus.webview.getWebviewById('nearbyMovier_list');
+			//mapView = plus.webview.getWebviewById('nearbyMovier_map');
 			preloadLayer();
 		},300);	
 		
@@ -69,6 +77,7 @@
 		initFilter();
 		viewMode = 'listView';
 		
+		mapView  = preloadMapView();
 		
 		//在android4.4中的swipe事件，需要preventDefault一下，否则触发不正常，故，在dragleft，dragright中preventDefault
 		window.addEventListener('dragright', function(e) {e.detail.gesture.preventDefault();});
@@ -78,12 +87,12 @@
 		
 		//切换模式按钮
 		document.getElementById("BtnMapMode").addEventListener("tap",changeMode,false);		
-		 
+		  
 	});
 	
 	function preloadMapView(){
+		/*
 		if(mapView){return};
-		
 		// 创建加载内容窗口
 		var topoffset='145px'; 
 		if(plus.navigator.isImmersedStatusbar()){// 兼容immersed状态栏模式
@@ -91,25 +100,59 @@
 		}
 		//var viewHeight = listView.getStyle().height - 145 +'px';
 		mapView = plus.webview.create('nearbyMovier_map.html','sub',{top:topoffset,position:'absolute',scrollIndicator:'none',background:'transparent'});
-		
+		*/
+		return $.preload({
+				    id: 'nearbyMovier_map',
+					url: 'nearbyMovier_map.html',
+					styles: {
+						left: "100%",
+						width: '100%',
+						zindex: 9998
+					}
+				}); 
 	}
 	
 	/**
-	 * 切换模式
+	 * 切换地图模式
 	 */
 	function changeMode(){
-		console.log('test');
+//		console.log(mapView.id);
 //		preloadMapView();
 //		mapView.show();
-		if('listView'==viewMode){//列表模式下切换到地图模式
+		/*if('listView'==viewMode){//列表模式下切换到地图模式*/
 //			console.log('listView');
-			viewMode = 'mapView';
-			document.getElementById("viewModeTxt").innerText = '切换到地图模式';
-		}else if('mapView'==viewMode){//地图模式下切换到列表模式
-//			console.log('mapView');
+			/*viewMode = 'mapView';
+			document.getElementById("viewModeTxt").innerText = '切换到地图模式';*/
+			
+			$.fire(mapView,"mapInit",{
+				filter:'ss',
+				type:'ttt' 
+			});
+			mapView.show('none', 0, function() {
+				mapView.setStyle({
+					left: '0%',
+					transition: {
+						duration: 300
+					}
+				}); 
+			});
+			
+			 
+		/*}else if('mapView'==viewMode){//地图模式下切换到列表模式
 			viewMode = 'listView';
 			document.getElementById("viewModeTxt").innerText = '切换到列表模式';
-		}
+			//TEST
+			mapView.setStyle({
+				left: '100%',
+				transition: {
+					duration: 150
+				} 
+			});
+			setTimeout(function() {
+				mapView.hide();
+				//mapView.close();
+			}, 300);
+		}*/
 
 	}
 	

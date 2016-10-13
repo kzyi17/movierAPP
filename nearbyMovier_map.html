@@ -11,7 +11,7 @@
 		#map {
 			width: 100%;
 			position: fixed;
-			top: 0px;
+			top: 44px;
 			bottom: 0px;
 			line-height: 200px;
 			text-align: center;
@@ -19,67 +19,115 @@
 	</style>
 </head>
 <body>
-	<div id="map">地图加载中...</div>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">标题</h1>
+	</header>
+	<div class="mui-content">
+	    <div id="map">地图加载中...</div>
+	</div>
+	
 	
 	
 <script src="js/mui.min.js"></script>
+<script src="js/app.min.js"></script>
+<script src="js/api.min.js"></script>
 <script type="text/javascript">
+(function($) {
 	var ws=null,wo=null;
 	var em=null,map=null,pcenter=null;
 	var watchId;
 	var pcenter;
+	var location;
+	$.plusReady(function(){
+		$.init({
+			swipeBack: false,
+			beforeback: back,
+		});
+		
+		ws=plus.webview.currentWebview();
+		wo=ws.opener();
+		
+		//自定义事件：筛选项初始化
+		window.addEventListener("mapInit",mapInit);
+		
+	});
+	
+	/**
+	 * 地图初始化
+	 * 
+	 */
+	function mapInit(){
+		map = new plus.maps.Map("map");
+		location = App.getLocation();
+		pcenter = new plus.maps.Point(location.longt,location.lat);
+		map.centerAndZoom(pcenter,16);
+		map.showUserLocation( true );
+		map.getUserLocation(function(state,pos){
+			if(0==state){
+				map.setCenter(pos);
+			}
+		});
+		
+	}
+	
+	
+	
+	/**
+	 * 返回事件
+	 */
+	function back(){
+		ws.setStyle({
+			left: '100%',
+			transition: {
+				duration: 300
+			} 
+		});
+		setTimeout(function() {
+			ws.hide();
+		}, 300);
+		console.log('close mapView');
+		return false;
+	}
+	
+}(mui));	
+</script>
+<!--
+<script type="text/javascript">
+	
 	// H5 plus事件处理
 	function plusReady(){
+		mui.init({
+			swipeBack: false,
+			beforeback: back,
+		});
+		
+		
+		
 		if(!em||ws){return};
 		// 获取窗口对象
 		ws=plus.webview.currentWebview();
 		wo=ws.opener();
 		
-		plus.geolocation.getCurrentPosition( function(position){
-			console.log(JSON.stringify(position));
-			var codns = position.coords;//获取地理坐标信息；
-			var lat = codns.latitude;//获取到当前位置的纬度；
-			str = '';
-			str += "纬度："+lat+"\n";
-			var longt = codns.longitude;//获取到当前位置的经度
-			str += "经度："+longt+"\n";
-			var accu = codns.accuracy;//地理坐标信息精确度信息；
-			str += "精确度："+accu+"\n";
-			
-			pcenter = new plus.maps.Point(longt,lat);
-			setTimeout(function(){
-				map=new plus.maps.Map("map");
-				map.setZoom(16);
-				map.showUserLocation( true );
-				map.getUserLocation(function(state,pos){
-					if(0==state){
-						map.setCenter(pos);
-					}
-				});
-				//var marker=new plus.maps.Marker(new plus.maps.Point(longt,lat));
-				//marker.setIcon("images/icon_camera.png");
-				//marker.setLabel("HBuilder");
-				//var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
-				//marker.setBubble(bubble);
-				//map.addOverlay(marker);
-//				createMarker(longt,lat);
-				//userLocation();
-			},300);
+		//
+		location = App.getLocation();
+		pcenter = new plus.maps.Point(location.longt,location.lat);
 		
-			console.log(str);
-		}, function ( e ) {
-			console.log( "获取定位位置信息失败："+e.message );
-		},{geocode:true,provider:'amap'}); 
+		map=new plus.maps.Map("map");
+		map.centerAndZoom(pcenter,16);
+		map.showUserLocation( true );
+		map.getUserLocation(function(state,pos){
+			if(0==state){
+				map.setCenter(pos);
+			}
+		});
 		
-		//高德地图坐标为(116.3974357341,39.9085574220), 百度地图坐标为(116.3975,39.9074)
-//		pcenter = new plus.maps.Point(116.3975,39.9074);
-//		setTimeout(function(){
-//			map=new plus.maps.Map("map");
-//			map.centerAndZoom(pcenter,12);
-//			createMarker();
-//		},300); 
-		// 显示页面并关闭等待框
-	    ws.show("pop-in");
+		//自定义事件：筛选项初始化
+		window.addEventListener("markerInit",markerInit);
+		
+		//console.log(JSON.stringify(location));
+		
+		
 	}
 	if(window.plus){
 		plusReady();
@@ -92,6 +140,33 @@
 		window.plus&&plusReady();
 	},false);
 	
+	
+	/**
+	 * 初始化地图
+	 */
+	function markerInit(event){
+		var extrasData = event.detail;
+		console.log(JSON.stringify(extrasData));
+		//createMarker();
+	}
+	
+	/**
+	 * 返回事件
+	 */
+	function back(){
+		ws.setStyle({
+			left: '100%',
+			transition: {
+				duration: 300
+			} 
+		});
+		setTimeout(function() {
+			ws.hide();
+		}, 300);
+		console.log('close mapView');
+		return false;
+	}
+	
 	function userLocation(){
 		map.showUserLocation( true );
 		map.getUserLocation(function(state,pos){
@@ -101,7 +176,7 @@
 		});
 	}
 	
-	function createMarker(longt,lat){
+	/*function createMarker(longt,lat){
 		//高德地图坐标为(116.3406445236,39.9630878208), 百度地图坐标为(116.347292,39.968716
 		var marker=new plus.maps.Marker(new plus.maps.Point(longt,lat));
 		marker.setIcon("images/icon_camera.png");
@@ -109,7 +184,7 @@
 		var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
 		marker.setBubble(bubble);
 		map.addOverlay(marker);
-	}
+	}*/
 	
 	
 	function userLocation(){
@@ -123,12 +198,23 @@
 	
 	function createMarker(){
 		//高德地图坐标为(116.3406445236,39.9630878208), 百度地图坐标为(116.347292,39.968716
-		var marker=new plus.maps.Marker(new plus.maps.Point(116.3406445236,39.9630878208));
-		marker.setIcon("/logo.png");
-		marker.setLabel("HBuilder");
-		var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
-		marker.setBubble(bubble);
-		map.addOverlay(marker);
+//		var marker=new plus.maps.Marker(new plus.maps.Point(116.3406445236,39.9630878208));
+//		marker.setIcon("/logo.png");
+//		marker.setLabel("HBuilder");
+//		var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
+//		marker.setBubble(bubble);
+//		map.addOverlay(marker);
+
+		params.location = ""+location.longt+","+location.lat;;
+		
+		//调用接口获取数据
+		Api.NearbyMovier(params,function(res){
+			
+			console.log(JSON.stringify(res))
+		},function(res){
+	    	$.toast(res.errmsg);
+	    });
+		
 	}
 	
 	/*function createSubview(){
@@ -145,6 +231,6 @@
 		//map.centerAndZoom(pcenter,12);
 		map.reset();
 	}
-</script>
+</script>-->
 </body>
 </html>

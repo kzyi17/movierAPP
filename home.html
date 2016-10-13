@@ -188,12 +188,16 @@
 		plus.navigator.setStatusBarStyle( "UIStatusBarStyleBlackOpaque" );
 		plus.navigator.setStatusBarBackground("#343943");
 		
-		$.init({
+		//设置定位
+		App.setLocation();
+		
+		
+		/*$.init({
 			preloadPages:[{
 				id:'list_detail',
 				url:'list_detail.html',
 			}]
-		});
+		});*/
 		
 		//监听退出
 		$.oldBack = mui.back;
