@@ -33,6 +33,7 @@
 					debug && console.log( "xhr请求已响应");
 					break;
 				case 4:
+					plus.nativeUI.closeWaiting();
 					if (MyXMLHttpRequest.status == 200) {
 						var responseObject = JSON.parse(MyXMLHttpRequest.responseText || '[]');
 						if(typeof(responseObject.errcode) == "undefined"){
@@ -40,15 +41,16 @@
 						}else{
 							ResponseObject.Error(responseObject);
 						}
-						plus.nativeUI.closeWaiting();
 					} else {
-						plus.nativeUI.closeWaiting();
 						setTimeout(function(){
 							owner.ShowError("发生了通讯错误！");
 						},1000);
 					}
 					break;
-				}
+				default:	
+					plus.nativeUI.closeWaiting();
+					break;
+			}
 		}
 		MyXMLHttpRequest.open("POST", URL);
 		MyXMLHttpRequest.setRequestHeader('Content-Type','application/json');
@@ -305,6 +307,16 @@
 	 */
 	owner.NearbyMovier = function(params,successCallback,errCallback){
 		owner.getApi('Nearby/movier',params,successCallback,errCallback); 
+	}; 
+	
+	/**
+	 * 获取附近影人--地图
+	 * @param {Object} params POST参数
+	 * @param {Object} successCallback 成功回调函数
+	 * @param {Object} errCallback	失败回调函数
+	 */
+	owner.NearbyMovierMap = function(params,successCallback,errCallback){
+		owner.getApi('Nearby/movierMap',params,successCallback,errCallback); 
 	}; 
 	
 }(mui, window.Api= {}));

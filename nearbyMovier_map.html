@@ -44,7 +44,7 @@
 			swipeBack: false,
 			beforeback: back,
 		});
-		
+		//plus.nativeUI.closeWaiting();
 		ws=plus.webview.currentWebview();
 		wo=ws.opener();
 		
@@ -69,8 +69,35 @@
 			}
 		});
 		
+		
+		//加载附近
+		loadNearby();
 	}
 	
+	/**
+	 * 加载附近影人
+	 */
+	function loadNearby(){
+		//params.page = page;
+		//params.limit = limit; 
+		var params = {};
+		params.location = ""+location.longt+","+location.lat;
+		//调用接口获取数据
+		Api.NearbyMovierMap(params,function(res){
+			for(i = 0; i < res.length; i ++){
+				console.log(JSON.stringify(res[i]));
+				var marker=new plus.maps.Marker(new plus.maps.Point(res[i].lng,res[i].lat));
+				marker.setIcon("images/icon_camera.png");
+				marker.setLabel(res[i].nickname);
+				//var bubble = new plus.maps.Bubble("打造最好的HTML5移动开发工具");
+				//marker.setBubble(bubble);
+				map.addOverlay(marker);
+			}
+		},function(res){
+	    	$.toast(res.errmsg);
+	    });
+	    
+	}
 	
 	
 	/**
