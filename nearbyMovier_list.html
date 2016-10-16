@@ -88,6 +88,7 @@
 	 */
 	function listInit(event){
 		var extrasData = event.detail;
+		console.log(JSON.stringify(extrasData));
 		publishtype = extrasData.listtype;
 		filter = {};
 		filter.publishtype = publishtype;
@@ -95,7 +96,7 @@
 		listEl.innerHTML = '';
 		pullEl.pullRefresh().refresh(true); //调用上拉加载的重置函数
 		pullEl.pullRefresh().pullupLoading();
-//		console.log(JSON.stringify(extrasData));
+		
 	}
 	
 	/**
@@ -139,13 +140,6 @@
 			params.page = page;
 			params.limit = limit; 
 			params.location = location;
-			
-			
-//			var res = [{nickname:'aa',title:"测试"},{nickname:'bb',title:"test"}];
-//			listItems = buildLiElement(res);
-//			listEl.appendChild(listItems);
-//			pullEl.pullRefresh().endPullupToRefresh(false);
-//			console.log(JSON.stringify(listEl));
 			
 			//调用接口获取数据
 			Api.NearbyMovier(params,function(res){

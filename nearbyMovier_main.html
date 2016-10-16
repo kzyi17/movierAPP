@@ -68,9 +68,14 @@
 		});
 		
 		setTimeout(function () {
-			//listView = plus.webview.getWebviewById('nearbyMovier_list');
+			listView = plus.webview.getWebviewById('nearbyMovier_list');
 			//mapView = plus.webview.getWebviewById('nearbyMovier_map');
 			preloadLayer();
+			//列表初始化
+			//var listType = extrasData.listtype;
+			$.fire(listView,'listInit',{ 
+		    	listtype:'aaaa',
+		 	});
 		},300);	
 		
 		//初始化筛选项
@@ -78,6 +83,9 @@
 		viewMode = 'listView';
 		
 		mapView  = preloadMapView();
+		
+		
+		
 		
 		//在android4.4中的swipe事件，需要preventDefault一下，否则触发不正常，故，在dragleft，dragright中preventDefault
 		window.addEventListener('dragright', function(e) {e.detail.gesture.preventDefault();});
