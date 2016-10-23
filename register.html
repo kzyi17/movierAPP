@@ -58,16 +58,10 @@
 	var registerBtn = doc.getElementById('btn_register');
 	var smsInterval=60;
 	var second = smsInterval,timer;
-	var position;
+	var userPosition = {};
 	
 	$.plusReady(function(){
-		plus.geolocation.getCurrentPosition( function(p){
-			console.log(JSON.stringify(p));
-			position = p.coords;//获取地理坐标信息；
-			
-		}, function ( e ) {
-			console.log( "获取定位位置信息失败："+e.message );
-		},{geocode:true,provider:'amap'}); 
+		userPosition = App.getCurrentPosition();
 	});
 	
 	//监听账号输入框输入时间
@@ -84,13 +78,30 @@
 	//监听获取验证码按钮
 	codeButton.addEventListener('tap', function(event) {
 		var param = {mobile:moblieBox.value};
-		Api.getSmsCode(param,function(result){
+		Api.getRegSmsCode(param,function(result){
 			secondCount();
-			$.toast("验证码已成功发送");
+			$.toast(result.success);
 		},function(result){
 			$.toast(result.errmsg);
 		});
 	}, false);
+	
+	//验证码按钮定时器
+	function secondCount(){
+		if (second == 1) {
+			clearTimeout(timer);
+			codeButton.innerText = "获取验证码";
+			codeButton.disabled = false;
+			second = smsInterval;
+	    } else {
+	        second -= 1;
+	        codeButton.disabled = true;
+			codeButton.innerText = second + "秒后获取";
+	        timer = setTimeout(function () {
+	            secondCount(second);
+	        }, 1000);
+	    }
+	}
 	
 	//监听“下一步”按钮
 	registerBtn.addEventListener('tap', function(event) {
@@ -98,7 +109,7 @@
 			$.toast('用户、验证码不能为空！');
 		}else{
 			registerBtn.disabled = true;
-			var param = {mobile: moblieBox.value,code:codeBox.value,userPosition:position};
+			var param = {mobile: moblieBox.value,code:codeBox.value,userPosition:userPosition};
 			Api.register(param,function(result){
 				//保存用户信息
 				var state = {};
@@ -106,7 +117,7 @@
 				state.userInfo = result.userInfo;
 				state.mapId = result.userInfo.mapID;
 				App.setState(state);
-				
+				 
 				//下一步跳转
 				$.openWindow({
 					url: 'register_pwd.html',
@@ -129,41 +140,8 @@
 		}
 	}, false); 
 	
-	//验证码按钮定时器
-	function secondCount(){
-		if (second == 1) {
-			clearTimeout(timer);
-			codeButton.innerText = "获取验证码";
-			codeButton.disabled = false;
-			second = smsInterval;
-	    } else {
-	        second -= 1;
-	        codeButton.disabled = true;
-			codeButton.innerText = second + "秒后获取";
-	        timer = setTimeout(function () {
-	            secondCount(second);
-	        }, 1000);
-	    }
-	}
 	
-///////////////////////////////////////
-//	registerBtn.addEventListener('tap', function(event) {
-//		console.log(moblieBox.value);
-//		codeButton.disabled=true;
-//		$.openWindow({
-//			url: 'register_pwd.html',
-//			id: 'register_pwd',
-//			show: {
-//				aniShow: 'pop-in'
-//			},
-//			styles: {
-//				popGesture: 'hide'
-//			},
-//			waiting: {
-//				autoShow: false
-//			}
-//		});
-//	}, false);
+
 }(mui, document));  
 </script>
 </body>

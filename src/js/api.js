@@ -4,7 +4,7 @@
  */
 (function($, owner) {
 	var debug = true; // 调试模式
-	var ServerDomainRoot = "http://192.168.1.6/movierAPI/";//接口服务器地址
+	var ServerDomainRoot = "http://192.168.1.5/movierAPI/";//接口服务器地址
 	//var ServerDomainRoot = "http://120.24.249.120/movier/api/";//接口服务器地址
 	//var ServerDomainRoot = "http://172.24.65.1/movier/api/";//接口服务器地址
 	
@@ -43,7 +43,7 @@
 						}
 					} else {
 						setTimeout(function(){
-							owner.ShowError("发生了通讯错误！");
+							owner.ShowError("网络不佳，请检查您的网络");
 						},1000);
 					}
 					break;
@@ -52,6 +52,20 @@
 					break;
 			}
 		}
+		
+		MyXMLHttpRequest.onerror = function(){
+			plus.nativeUI.closeWaiting();
+			console.log( "xhr请求错误");
+		}
+		
+		MyXMLHttpRequest.timeout=10000; 
+		/*
+		//这里ontimeout事件不起作用
+		MyXMLHttpRequest.ontimeout = function(){
+			console.log( "xhr请求超时");
+		}
+		*/
+		
 		MyXMLHttpRequest.open("POST", URL);
 		MyXMLHttpRequest.setRequestHeader('Content-Type','application/json');
 		MyXMLHttpRequest.send(JSON.stringify(RequestObject)); 
@@ -170,13 +184,23 @@
 //-+-+-+-+-+-+-+-+-接口实现+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //////////////////////////////////////////////////////////////
 	/**
-	 * 获取短信验证码
+	 * 获取短信验证码【通用】
 	 * @param {Object} params POST参数
 	 * @param {Object} successCallback 成功回调函数
 	 * @param {Object} errCallback	失败回调函数
 	 */
 	owner.getSmsCode = function(params,successCallback,errCallback){
 		owner.getApi('public/getsmscode',params,successCallback,errCallback);
+	};
+	
+	/**
+	 * 获取注册短信验证码
+	 * @param {Object} params POST参数
+	 * @param {Object} successCallback 成功回调函数
+	 * @param {Object} errCallback	失败回调函数
+	 */
+	owner.getRegSmsCode = function(params,successCallback,errCallback){
+		owner.getApi('user/regSmsCode',params,successCallback,errCallback);
 	};
 	
 	/**

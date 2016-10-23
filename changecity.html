@@ -455,15 +455,37 @@
 	</div> 
 </div>
 <script src="js/mui.min.js"></script>
+<script src="js/app.min.js"></script>
 <script src="js/mui.indexedlist.js"></script>
-<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 (function($, doc) {
-	$.init();
-	var header = document.querySelector('header.mui-bar');
-	var list = document.getElementById('list');
-	list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
-	
+	$.plusReady(function() {
+		$.init();
+		var header = document.querySelector('header.mui-bar');
+		var list = document.getElementById('list');
+		list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+		//初始化搜索
+		window.indexedList = new mui.IndexedList(list);
+		//点击列表选择城市
+		var ul_city = document.getElementById('ul_city');
+		ul_city.addEventListener("tap", function(e) {
+			var tagClass = e.target.getAttribute("class");
+			if (tagClass && tagClass.indexOf("mui-table-view-cell") != -1) {
+				var selectCity = e.target.innerText;
+				var cityID = e.target.getAttribute("data");
+				$.confirm('是否切换城市：' + selectCity,'',['切换', '不了'],function(e){
+					if (e.index == 0) {
+						var ws = plus.webview.currentWebview();
+						var homeView = plus.webview.getLaunchWebview();
+						var city = {code:cityID,name:selectCity};
+						App.setCurrentCity(city);
+						$.fire(homeView,'changCity');
+						plus.webview.close(ws,'slide-out-bottom',600);
+					} 
+				});
+			}
+		});
+	});
 }(mui, document));
 
 

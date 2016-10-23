@@ -57,7 +57,7 @@
 </head>
 <body>
 <header class="mybar mui-bar mui-bar-nav">
-    <button class="mui-btn-link mui-pull-left" id="btnCity"><span id="citytxt">北京</span><span class="mui-icon mui-icon-arrowdown"></span></button>
+    <button class="mui-btn-link mui-pull-left" id="btnCity"><span id="citytxt">全国</span><span class="mui-icon mui-icon-arrowdown"></span></button>
     <a class="mui-pull-right"><span class="mui-icon mui-icon-search"></span></a>
 </header>
 <footer class="mynav mui-bar mui-bar-tab">
@@ -183,15 +183,17 @@
 (function($, doc) {
 	var listPage;//定义列表页面
 	var userPosition;
+	 
 	
 	$.plusReady(function() {
 		plus.navigator.setStatusBarStyle( "UIStatusBarStyleBlackOpaque" );
 		plus.navigator.setStatusBarBackground("#343943");
+		 
+		//APP初始化操作
+		App.appInit();
+		changCity();
 		
-		//设置定位
-		App.setLocation();
-		
-		
+		    
 		/*$.init({
 			preloadPages:[{
 				id:'list_detail',
@@ -219,14 +221,24 @@
 //		    url:'list_main.html', 
 //		    id:'list_main',//默认使用当前页面的url作为id
 //		});    
+		//getCurrentPosition(); 
 		
-		getCurrentPosition();  
+		window.addEventListener("changCity", changCity);
 	});  
+	
+	/**
+	 * 切换显示当前城市
+	 */
+	function changCity(){
+		var currentCity = App.getCurrentCity();
+		var cityTxt = document.getElementById("citytxt");
+		cityTxt.innerText = currentCity.name;
+	}
 	
 	/**
 	 * 更新用户坐标
 	 */
-	function getCurrentPosition(){
+/*	function getCurrentPosition(){
 		var state = App.getState();
 		if(state.userId){
 			plus.geolocation.getCurrentPosition( function(p){
@@ -238,7 +250,7 @@
 				console.log( "获取定位位置信息失败："+e.message );
 			},{geocode:true,provider:'amap'});
 		}
-	} 
+	} */
 	  
 	/////////////////////////////////////////////////////////
 	var userMenu = doc.getElementById('menu_user');
