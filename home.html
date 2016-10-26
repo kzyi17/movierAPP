@@ -260,6 +260,8 @@
 	
 	//监听菜单按钮【用户中心】
 	userMenu.addEventListener('tap', function(event) {
+		//wv_login.show('slide-in-up');
+		
 		App.loginAuth(function(){
 			$.openWindow({
 				url: 'user_center.html',
@@ -275,7 +277,7 @@
 					autoShow: true,
 					title:'正在玩命加载...',
 				}
-			});
+			}); 
 		});
 	}, false);
 	

@@ -36,6 +36,8 @@
 					plus.nativeUI.closeWaiting();
 					if (MyXMLHttpRequest.status == 200) {
 						var responseObject = JSON.parse(MyXMLHttpRequest.responseText || '[]');
+						//console.log(JSON.stringify(responseObject));
+						//TODO 这里返回值判断处理需要再优化
 						if(typeof(responseObject.errcode) == "undefined"){
 							ResponseObject.Success(responseObject);
 						}else{

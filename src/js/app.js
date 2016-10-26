@@ -195,28 +195,5 @@ var APP_NAME = "影人根据地";
 		}
 	};
 	
-//	/**
-//	 * 设置当前定位
-//	 **/
-//	owner.setLocation = function() {
-//		var location =  {};
-//		plus.geolocation.getCurrentPosition( function(position){
-//			location.longt = position.coords.longitude;
-//			location.lat = position.coords.latitude;
-//			location.info = position;
-//			localStorage.setItem('$movier_location', JSON.stringify(location));
-//		}, function ( e ) {
-//			console.log( "获取定位位置信息失败："+e.message );
-//		},{geocode:true,provider:'amap'});
-//	}; 
-//	
-//	/**
-//	 * 获取当前定位
-//	 **/
-//	owner.getLocation = function() {
-//		var stateText = localStorage.getItem('$movier_location') || "{}";
-//		return JSON.parse(stateText);
-//	};
-//	
 	
 }(mui, window.App = {}));
