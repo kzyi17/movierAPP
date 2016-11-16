@@ -70,7 +70,7 @@
 <script src="js/mui.picker.min.js"></script>
 <script src="js/mui.poppicker.min.js"></script>
 <script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/city.data-3.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 (function($, doc) {
 	function plusReady(){
@@ -92,9 +92,9 @@
 		var isModify = false;
 		
 		//获取用户信息
-		var userId = App.getUserId();
+		var userId = App.getUserID();
 		var param = {user_id:userId};
-		Api.getUserInfo(param,function(result){
+		/*Api.getUserInfo(param,function(result){
 			var user = result || {};
 			nicknameBox.innerText = user.nickname;
 			sexBox.value = user.sex;
@@ -109,7 +109,7 @@
 			
 			
 			mui.currentWebview.show();
-		});
+		});*/
 		
 		//监听按钮-昵称
 		nicknameBtn.addEventListener('tap',function(event){

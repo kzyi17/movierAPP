@@ -120,6 +120,32 @@ html,.mui-content{background-color: #FFFFFF;}
     border: 1px solid #abc047;
     background-color: #abc047;
 }
+.my-btn-cyan-outlined{
+	color: #abc047;
+    border: 1px solid #abc047;
+    background-color: transparent;
+}
+.my-btn-cyan-outlined:enabled:active, 
+.my-btn-cyan-outlined.mui-active:enabled,
+{
+    color: #fff;
+    border: 1px solid #abc047;
+    background-color: #abc047;
+}
+/*.mui-btn.mui-active:enabled, 
+.mui-btn:enabled:active, 
+button.mui-active:enabled, 
+button:enabled:active, 
+input[type=button].mui-active:enabled, 
+input[type=button]:enabled:active, 
+input[type=reset].mui-active:enabled, 
+input[type=reset]:enabled:active, 
+input[type=submit].mui-active:enabled, 
+input[type=submit]:enabled:active {
+    color: #fff;
+    background-color: #929292;
+}*/
+
 .my-btn-im{
 	color: #333333;
     border: 1px solid #abc047;

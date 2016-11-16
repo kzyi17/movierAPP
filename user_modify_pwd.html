@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	.mui-content-padded {
+			margin: 15px 20px;
+		}
+		.btnbox{
+			margin: 20px 10px;
+		}
+    	#btn_submit{padding:10px 0;}
+    </style>
+</head>
+<body>
+<header class="mybar2 mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">修改密码</h1>
+</header>
+<div class="mui-content">
+	<div class="mui-content-padded">
+		<div class="mui-input-row">
+			<input id='oldpassword' type="password" class="mui-input-clear" placeholder="原密码" >
+		</div>
+		<div class="mui-input-row">
+			<input id='password' type="password" class="mui-input-clear" placeholder="新密码" >
+		</div>
+		<div class="mui-input-row">
+			<input id='repassword' type="password" class="mui-input-clear" placeholder="确认密码" >
+		</div>
+		
+		<div class="btnbox">
+			<button id='btn_submit' class="mui-btn mui-btn-block my-btn-cyan">提交</button>
+		</div>
+		
+	</div>
+</div> 
+<script src="js/mui.min.js"></script>
+<script src="js/until.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/api.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/app.min.js"></script>
+<script type="text/javascript" charset="UTF-8">
+(function($, doc) {
+	var oldpasswordBox = doc.getElementById('oldpassword');
+	var passwordBox = doc.getElementById('password');
+	var repasswordBox = doc.getElementById('repassword');
+	var submitBtn = doc.getElementById('btn_submit');
+	
+	$.plusReady(function(){
+		
+	});
+	
+	/**
+	 * 检查输入框
+	 * @param {Object} inputbox
+	 * @param {Object} minlength
+	 * @param {Object} maxlength
+	 */
+	function checkInput(inputbox,minlength,maxlength){
+		if((inputbox.value.length+1)>minlength && (inputbox.value.length-1)<maxlength){
+			return true;
+		}else{
+			$.toast('请输入'+minlength+'-'+maxlength+'个字符');
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * 对比密码
+	 */
+	function comparePwd(){
+		if(passwordBox.value==oldpasswordBox.value){
+			$.toast('新密码不能跟旧密码相同');
+			return false;
+		}
+		if(passwordBox.value!=repasswordBox.value){
+			$.toast('两次密码必须一样');
+			return false;
+		}
+		return true;
+	}
+	
+	//监听提交按钮
+	submitBtn.addEventListener('tap', function(event) {
+		if(checkInput(oldpasswordBox,8,14)&&checkInput(passwordBox,8,14)
+		  &&checkInput(repasswordBox,8,14)
+		  &&comparePwd()){
+		  	var userID = App.getUserID();
+		  	var params = {userid: userID,oldpwd:oldpasswordBox.value,newpwd:passwordBox.value};
+			Api.updateInfo(params,function(result){
+				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
+				$.toast('密码修改成功');
+			},function(result){
+				oldpasswordBox.value = '';
+				passwordBox.value = '';
+				repasswordBox.value = '';
+				$.toast(result.errmsg);
+			});
+		}
+	}, false); 
+	
+
+}(mui, document));  
+</script>
+</body>
+</html>

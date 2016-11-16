@@ -109,19 +109,17 @@
 			$.toast('用户、验证码不能为空！');
 		}else{
 			registerBtn.disabled = true;
-			var param = {mobile: moblieBox.value,code:codeBox.value,userPosition:userPosition};
+			var param = {mobile: moblieBox.value,code:codeBox.value,location:userPosition};
 			Api.register(param,function(result){
 				//保存用户信息
-				var state = {};
-				state.userId = result.userInfo.user_id;
-				state.userInfo = result.userInfo;
-				state.mapId = result.userInfo.mapID;
-				App.setState(state);
-				 
+				App.setUserInfo(result.userInfo);
+				App.setLogin(result.userInfo.userid,result.invalid_token); 
+				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
+//				$.toast('注册成功');
 				//下一步跳转
 				$.openWindow({
-					url: 'register_pwd.html',
-					id: 'register_pwd',
+					url: 'user_profile.html',
+					id: 'user_profile',
 					show: {
 						aniShow: 'pop-in'
 					},

@@ -59,7 +59,7 @@
 	</form>
     <div class="mui-content-padded">
     	<button id='btn_login' class="mui-btn mui-btn-block my-btn-cyan">登录</button>
-		<div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
+		<div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetpwd'>忘记密码</a>
     </div>
     <div id="oauth-area" class="mui-content-padded oauth-area">
 
@@ -71,7 +71,11 @@
 <script type="text/javascript">
 (function($, doc) {
 	var ws=null;
-	var userPosition;
+//	var userPosition;
+	var loginBtn = doc.getElementById('btn_login');
+	var mobileBox = doc.getElementById('account');
+	var passwordBox = doc.getElementById('password');
+	var targetId,targetUrl;
 	$.init({
 		swipeBack: false,
 		beforeback: function(){
@@ -89,8 +93,13 @@
 		},
 	});
 	$.plusReady(function() {
+		plus.nativeUI.closeWaiting();
 		ws=plus.webview.currentWebview();
-		userPosition = App.getCurrentPosition();
+		targetId = ws.targetId || 'home';
+		targetUrl = ws.targetUrl || 'home.html';
+		/*mobileBox.value = '18620081053';  
+		passwordBox.value = '18620081053';*/
+		
 		//第三方登录
 		var auths = {};
 		var oauthArea = doc.querySelector('.oauth-area');
@@ -151,25 +160,22 @@
 	}, false);
 	
 	//监听登陆按钮
-	var loginBtn = doc.getElementById('btn_login');
-	var mobileBox = doc.getElementById('account');
-	var passwordBox = doc.getElementById('password');
 	loginBtn.addEventListener('tap', function(event) {
 		if(mobileBox.value=='' || passwordBox.value==''){
 			$.toast('请输入完整');
 			return;
 		}else{
 			loginBtn.disabled = true;
-			var loginInfo = {mobile:mobileBox.value,password:passwordBox.value,userPosition:userPosition};
+			var userPosition = App.getCurrentPosition();
+			var loginInfo = {mobile:mobileBox.value,password:passwordBox.value,location:userPosition};
 			Api.login(loginInfo,function(result){
 				//保存用户信息
-				state = {}; 
-				state.userId = result.userInfo.user_id;
-				state.userInfo = result.userInfo;
-				App.setState(state);
-				
+				App.setUserInfo(result.userInfo);
+				App.setLogin(result.userInfo.userid,result.invalid_token); 
+//				loginBtn.disabled = false; 
 				//页面跳转
 				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
+				$.openWindow({url:targetUrl,id:targetId});
 				$.toast("登录成功");
 			},function(result){
 				$.toast(result.errmsg);
@@ -178,6 +184,19 @@
 		}
 	}, false);
 	
+	//监听忘记按钮
+	document.getElementById("forgetpwd").addEventListener('tap', function(event) {
+		//alert('forgetpwd');
+		$.openWindow({
+			url: 'forgotpwd.html',
+			id: 'forgotpwd',
+			waiting: {
+				autoShow: true,
+				title:'正在玩命加载...',
+			}
+		});
+		
+	}, false);
 }(mui, document));
 </script>
 </body>

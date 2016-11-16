@@ -193,13 +193,8 @@
 		App.appInit();
 		changCity();
 		
-		    
-		/*$.init({
-			preloadPages:[{
-				id:'list_detail',
-				url:'list_detail.html',
-			}]
-		});*/
+		//自动登录
+		autoLogin(); 
 		
 		//监听退出
 		$.oldBack = mui.back;
@@ -216,15 +211,23 @@
 			}, 1000);
 			return false;
 		}; 
-		//预加载列表页面
-//		listPage = $.preload({
-//		    url:'list_main.html', 
-//		    id:'list_main',//默认使用当前页面的url作为id
-//		});    
-		//getCurrentPosition(); 
 		
 		window.addEventListener("changCity", changCity);
+		
 	});  
+	
+	/**
+	 * 自动登陆 
+	 */
+	function autoLogin(){
+		loginInfo = App.getToken();  
+		loginInfo.location = App.getCurrentPosition();
+		Api.autoLogin(loginInfo,function(result){
+			App.setUserInfo(result.userInfo);
+		},function(result){ 
+			App.setLogout(); 
+		});       
+	}    
 	
 	/**
 	 * 切换显示当前城市
@@ -235,22 +238,6 @@
 		cityTxt.innerText = currentCity.name;
 	}
 	
-	/**
-	 * 更新用户坐标
-	 */
-/*	function getCurrentPosition(){
-		var state = App.getState();
-		if(state.userId){
-			plus.geolocation.getCurrentPosition( function(p){
-				var param = {map_id:state.userInfo.map_id,user_id:state.userId,nickname:state.userInfo.nickname,location:p.coords};
-				Api.updateUserPos(param,function(res){
-					console.log(JSON.stringify(res));
-				});
-			}, function ( e ) {
-				console.log( "获取定位位置信息失败："+e.message );
-			},{geocode:true,provider:'amap'});
-		}
-	} */
 	  
 	/////////////////////////////////////////////////////////
 	var userMenu = doc.getElementById('menu_user');
@@ -261,8 +248,9 @@
 	//监听菜单按钮【用户中心】
 	userMenu.addEventListener('tap', function(event) {
 		//wv_login.show('slide-in-up');
-		
-		App.loginAuth(function(){
+		App.openWithLogin('user_center.html','user_center');
+		      
+		/*App.loginAuth(function(){
 			$.openWindow({
 				url: 'user_center.html',
 				id: 'user_center',
@@ -278,7 +266,7 @@
 					title:'正在玩命加载...',
 				}
 			}); 
-		});
+		});*/
 	}, false);
 	
 	//监听菜单按钮【发布】

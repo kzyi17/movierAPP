@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css"/>
+    <style type="text/css">
+    	/*.mui-content-padded {
+			margin-top: 25px;
+		} */
+		html,
+		body {
+			background-color: #f5f5f5;
+		}
+		.mui-views,
+		.mui-view,
+		.mui-pages,
+		.mui-page,
+		.mui-page-content {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #efeff4;
+		}
+		.mui-pages {
+			top: 46px;
+			height: auto;
+		}
+		.mui-scroll-wrapper,
+		.mui-scroll {
+			background-color: #efeff4;
+			padding-bottom: 40px;
+		}
+		.mui-page.mui-transitioning {
+			-webkit-transition: -webkit-transform 200ms ease;
+			transition: transform 200ms ease;
+		}
+		.mui-page-left {
+			-webkit-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+		.mui-ios .mui-page-left {
+			-webkit-transform: translate3d(-20%, 0, 0);
+			transform: translate3d(-20%, 0, 0);
+		}
+		.mui-navbar {
+			position: fixed;
+			right: 0;
+			left: 0;
+			z-index: 10;
+			height: 44px;
+			background-color: #f7f7f8;
+		}
+		.mui-navbar .mui-bar {
+			position: absolute;
+			background: transparent;
+			text-align: center;
+		}
+		.mui-android .mui-navbar-inner.mui-navbar-left {
+			opacity: 0;
+		}
+		.mui-ios .mui-navbar-left .mui-left,
+		.mui-ios .mui-navbar-left .mui-center,
+		.mui-ios .mui-navbar-left .mui-right {
+			opacity: 0;
+		}
+		.mui-navbar .mui-btn-nav {
+			-webkit-transition: none;
+			transition: none;
+			-webkit-transition-duration: .0s;
+			transition-duration: .0s;
+		}
+		.mui-navbar .mui-bar .mui-title {
+			display: inline-block;
+			position: static;
+			width: auto;
+		}
+		.mui-page-shadow {
+			position: absolute;
+			right: 100%;
+			top: 0;
+			width: 16px;
+			height: 100%;
+			z-index: -1;
+			content: '';
+		}
+		.mui-page-shadow {
+			background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+			background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+		}
+		.mui-navbar-inner.mui-transitioning,
+		.mui-navbar-inner .mui-transitioning {
+			-webkit-transition: opacity 200ms ease, -webkit-transform 200ms ease;
+			transition: opacity 200ms ease, transform 200ms ease;
+		}
+		.mui-page {
+			display: none;
+		}
+		.mui-pages .mui-page {
+			display: block;
+		}
+		.mui-page .mui-table-view:first-child {
+			margin-top: 15px;
+		}
+		.mui-page .mui-table-view:last-child {
+			margin-bottom: 30px;
+		}
+		.mui-table-view {
+			margin-top: 20px;
+		}
+		.mui-table-view:after {
+			height: 0;
+		}
+		.mui-table-view span.mui-pull-right {
+			color: #999;
+		}
+		.mui-table-view-divider {
+			background-color: #efeff4;
+			font-size: 14px;
+		}
+		.mui-table-view-divider:before,
+		.mui-table-view-divider:after {
+			height: 0;
+		}
+		.mui-content-padded {
+			margin: 20px 15px;
+		}
+		.input_box{
+    		font-size: 15px;
+    		color: #777777;
+    		
+    	}
+    	.input_box.input_box_bg{
+    		background: url(images/icon_inputbg.gif) no-repeat;
+    		background-position: right bottom;
+    		background-size: 10px;
+    		padding-right: 20px;
+    	}
+    	.usericon{
+    		width: 180px;
+    		height: 180px;
+    		border-radius: 90px;
+    		margin-right: 20px;
+    	}
+    	.usericon_lable{
+    		line-height: 60px;
+    	}
+    	.my-bar-footer{
+			position: fixed;
+		    z-index: 10;
+		    right: 0;
+		    left: 0;
+		    bottom: 0;
+		    background-color: #f7f7f7;
+		    -webkit-backface-visibility: hidden;
+		    backface-visibility: hidden;
+		}
+		.footbtn{
+	    	margin-bottom: 0px; 
+	    	border: none;
+	    	border-radius:0;
+		}
+		.my-img-radio{
+			/*border: 1px solid #2AC845;*/
+			width: 210px;
+			margin: 15px auto;
+			text-align: center;
+			/*position: relative;*/
+		}
+		.my-img-radio input[type=radio] {
+			/*position: absolute;
+		    right: 0px;
+		    bottom: 20px;*/
+		   right: 0px;
+		}
+		.my-img-radio label img{
+			width: 180px;
+		}
+		.my-img-radio input[type=radio]:before{
+			content:none;
+		}
+		.my-img-radio input[type='radio']:checked:before {
+			content: '\e442';
+			color: #abc047;
+		}
+    </style>
+</head>
+<body>
+	<!--页面主结构开始-->
+	<div id="app" class="mui-views">
+		<div class="mui-view">
+			<div class="mui-navbar">
+			</div>
+			<div class="mui-pages">
+			</div>
+		</div>
+	</div>
+	<!--页面主结构结束-->
+	
+	<!--单页面开始--><!--设置密码-->
+	<div id="setPwd" class="mui-page">
+		<!--页面标题栏开始--> 
+		<div class="mui-navbar-inner mybar2 mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<span class="mui-icon mui-icon-left-nav"></span>
+			</button>
+			<h1 class="mui-center mui-title">设置密码</h1>
+		</div>
+		<!--页面标题栏结束-->
+		<!--页面主内容区开始-->
+		<div class="mui-page-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="mui-content-padded mt20">
+						<div class="mui-input-row">
+							<input id='password' type="password" class="mui-input-clear" placeholder="登录密码" >
+						</div>
+						<div class="mui-input-row">
+							<input id='repassword' type="password" class="mui-input-clear" placeholder="确认密码" >
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="my-bar-footer mui-row">
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button id='' class="mui-btn mui-btn-block footbtn mui-action-back">上一步</button>
+			</div>
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button id='NBtnPwd' class="mui-btn mui-btn-block footbtn my-btn-cyan">下一步</button>
+			</div>
+		</footer>
+		<!--页面主内容区结束-->
+	</div>
+	<!--单页面结束-->
+	
+	<!--单页面开始--><!--选择性别-->
+	<div id="setSex" class="mui-page">
+		<!--页面标题栏开始--> 
+		<div class="mui-navbar-inner mybar2 mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<span class="mui-icon mui-icon-left-nav"></span>
+			</button>
+			<h1 class="mui-center mui-title">选择性别</h1>
+		</div>
+		<!--页面标题栏结束-->
+		<!--页面主内容区开始-->
+		<div class="mui-page-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="mui-input-row mui-radio my-img-radio ">
+						<label><img src="images/icon_male.png"></label>
+						<input name="sex" type="radio" value="1" checked>
+					</div>
+					<div class="mui-input-row mui-radio my-img-radio ">
+						<label><img src="images/icon_female.png"></label>
+						<input name="sex" type="radio" value="0">
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="my-bar-footer mui-row">
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button class="mui-btn mui-btn-block footbtn mui-action-back">上一步</button>
+			</div>
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button id='NBtnSex' class="mui-btn mui-btn-block footbtn my-btn-cyan">下一步</button>
+			</div>
+		</footer>
+		<!--页面主内容区结束-->
+	</div>
+	<!--单页面结束-->
+	
+	<!--单页面开始--><!--上传头像-->
+	<div id="setIcon" class="mui-page">
+		<!--页面标题栏开始--> 
+		<div class="mui-navbar-inner mybar2 mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<span class="mui-icon mui-icon-left-nav"></span>
+			</button>
+			<h1 class="mui-center mui-title">上传头像</h1>
+		</div>
+		<!--页面标题栏结束-->
+		<!--页面主内容区开始-->
+		<div class="mui-page-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="mui-content-padded mui-text-center ">
+						<p>一张小小照片秀出你的精彩，快传张头像</p>
+						<p class="mt20">
+							<a id="btnUserIcon"><img id="userIcon" src="images/userIconUpload.png" class="usericon"/></a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="my-bar-footer mui-row">
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button class="mui-btn mui-btn-block footbtn mui-action-back">上一步</button>
+			</div>
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button id='NBtnIcon' class="mui-btn mui-btn-block footbtn my-btn-cyan">提交</button>
+			</div>
+		</footer>
+		<!--页面主内容区结束-->
+	</div>
+	<!--单页面结束-->
+	
+	<!--单页面开始--><!--设置昵称、地区、职业-->
+	<div id="setBasics" class="mui-page">
+		<!--页面标题栏开始--> 
+		<div class="mui-navbar-inner mybar2 mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<span class="mui-icon mui-icon-left-nav"></span>
+			</button>
+			<h1 class="mui-center mui-title">完善资料</h1>
+		</div>
+		<!--页面标题栏结束-->
+		<!--页面主内容区开始-->
+		<div class="mui-page-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell"><a id="nicknameBtn"><span class="input_lable">昵称</span> <span class="mui-pull-right input_box input_box_bg" id="nicknameBox">请输入您的昵称</span></a></li>
+						<li class="mui-table-view-cell"><a id="jobBtn"><span class="input_lable">职业</span> <span class="mui-pull-right input_box input_box_bg" id="jobBox">请选择您的职业</span></a></li>
+						<li class="mui-table-view-cell"><a id="cityBtn"><span class="input_lable">地区</span> <span class="mui-pull-right input_box input_box_bg" id="cityBox">请选择您所在地区</span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<footer class="my-bar-footer mui-row">
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button class="mui-btn mui-btn-block footbtn mui-action-back">上一步</button>
+			</div>
+			<div class="mui-col-xs-6 mui-col-sm-6">
+				<button id='NBtnBasics' class="mui-btn mui-btn-block footbtn my-btn-cyan">下一步</button>
+			</div>
+		</footer>
+		<!--页面主内容区结束-->
+	</div>
+	<!--单页面结束-->
+</body>	
+<script src="js/mui.min.js"></script>	
+<script src="js/api.min.js"></script>
+<script src="js/app.min.js"></script>
+<script src="js/mui.view.js"></script>	
+<script src="js/binaryajax.min.js"></script>
+<script src="js/exif.min.js"></script>
+<script src="js/canvasResize.min.js"></script>
+<script src="js/upload-ui.min.js"></script> 
+<script src="js/city.data-3.min.js"></script>
+<script src="js/mui.picker.min.js"></script>
+<script src="js/mui.poppicker.min.js"></script>
+<script src="js/data_picker.min.js"></script>
+<link href="css/mui.picker.min.css" rel="stylesheet" />
+<link href="css/mui.poppicker.min.css" rel="stylesheet" />
+<script>
+(function($) {
+	$.init();
+	//初始化单页view
+	var viewApi = $('#app').view({
+		defaultPage: '#setPwd'
+	});
+	//初始化单页的区域滚动
+	$('.mui-scroll-wrapper').scroll();
+	
+	//处理view的后退与webview后退
+	var oldBack = $.back;
+	$.back = function() {
+		if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+			viewApi.back();
+		} else { //执行webview后退
+			/*$.confirm('是否退出当前账号','影人根据地',['取消','退出'],function(e) {
+				if (e.index == 1) {
+					mui.back();
+				} 
+			});  */
+			$.alert('请先完善资料');
+			//oldBack();
+			
+		} 
+	};
+	
+	var view = viewApi.view;
+	var pwdInput = document.getElementById("password");
+	var repwdInput = document.getElementById("repassword");
+	var fromData ={};
+	
+	var nicknameBtn = document.getElementById("nicknameBtn")
+	var jobBtn = document.getElementById('jobBtn');
+	var cityBtn = document.getElementById('cityBtn');
+	
+	var nicknameBox = document.getElementById("nicknameBox");
+	var jobBox = document.getElementById("jobBox");
+	var cityBox = document.getElementById("cityBox");
+	
+	//监听按钮-昵称
+	nicknameBtn.addEventListener('tap',function(event){
+		old = "请输入您的昵称";
+		event.detail.gesture.preventDefault();
+		$.prompt('请输入您的昵称', old, APP_NAME, ['取消', '确定'], function(e) {
+			if (e.index == 1 && e.value != "") {
+				fromData.nickname = e.value;
+				nicknameBox.innerText = e.value;
+			}
+		})
+	},false);
+	
+	//监听按钮-职业
+	var jobPicker = new $.PopPicker();
+	jobPicker.setData(eventJobData); 
+	jobBtn.addEventListener('tap',function(event){
+		jobPicker.show(function(items) {
+			fromData.job = items[0].value;
+			jobBox.innerText = (items[0] || {}).text;
+		});
+	},false);
+	
+	//监听按钮-地区
+	var cityPicker = new $.PopPicker({layer: 3});
+	cityPicker.setData(cityData3);
+	cityBtn.addEventListener('tap',function(e){
+		cityPicker.show(function(items) {
+			fromData.province_id = (items[0] || {}).value;
+			fromData.city_id = (items[1] || {}).value;
+			fromData.area_id = (items[2] || {}).value;
+			cityBox.innerText = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+		});
+	},false);
+	
+	//监听上传图像
+	document.getElementById("btnUserIcon").addEventListener('tap',function(e) {
+		uploadOne(function(imageData){
+			fromData.file = imageData;
+//			fromData.file = 'aaa';
+			document.getElementById("userIcon").src = imageData;
+		});
+		
+	}); 
+	
+	//监听下一步等操作
+	var NBtnPwd = document.getElementById("NBtnPwd");
+	var NBtnSex = document.getElementById("NBtnSex");
+	var NBtnBasics = document.getElementById("NBtnBasics");
+	var NBtnIcon = document.getElementById("NBtnIcon");
+	
+	NBtnPwd.addEventListener('tap',function(e) {
+		if(checkInput(pwdInput,8,14)&&checkInput(repwdInput,8,14)
+		  &&comparePwd()){
+		  	//执行下一步操作
+		  	var userID = App.getUserID();
+		  	fromData.userid = userID;
+		  	fromData.updataType = 'ALL';
+		  	fromData.password = pwdInput.value;
+		  	setTimeout(function(){
+		  		viewApi.go('#setSex');
+		  	},300);
+		}
+	});
+	
+	NBtnSex.addEventListener('tap',function(e) {
+		sexVal = document.querySelector('[name="sex"]:checked').value;
+		fromData.sex = sexVal;
+		viewApi.go('#setBasics');
+	});
+	
+	NBtnBasics.addEventListener('tap',function(e) {
+		if(!fromData.nickname){
+			$.toast('昵称必须填写');
+			return;
+		}
+		if(!fromData.job){
+			$.toast('请选择你的职业');
+			return;
+		}
+		if(!fromData.province_id||!fromData.city_id||!fromData.area_id){
+			$.toast('请选择你所在的地区');
+			return;
+		}
+		viewApi.go('#setIcon');
+	});
+	
+	NBtnIcon.addEventListener('tap',function(e) {
+		if(!fromData.file){
+			$.toast('请上传头像');
+			return;
+		}
+//		console.log(JSON.stringify(fromData));
+		Api.updateInfo(fromData,function(result){
+			App.setUserInfo(result.userInfo);
+			$.toast('恭喜！注册成功');
+			
+			plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
+			$.openWindow({
+				url: 'home.html',
+				id: 'home',
+			});
+			
+		},function(result){
+			alert(result.errmsg);
+		});
+		
+	});
+	
+	
+	/**
+	 * 检查输入框
+	 * @param {Object} inputbox
+	 * @param {Object} minlength
+	 * @param {Object} maxlength
+	 */
+	function checkInput(inputbox,minlength,maxlength){
+		if((inputbox.value.length+1)>minlength && (inputbox.value.length-1)<maxlength){
+			return true;
+		}else{
+			$.toast('请输入'+minlength+'-'+maxlength+'个字符');
+			return false;
+		}
+	}
+	/**
+	 * 对比密码
+	 */
+	function comparePwd(){
+		if(pwdInput.value==repwdInput.value){
+			return true;
+		}else{
+			$.toast('两次密码必须一样');
+			return false;
+		}
+	}	
+	
+	
+	//监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+	//第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+/*	view.addEventListener('pageBeforeShow', function(e) {
+		console.log(e.detail.page.id + ' beforeShow');
+	});
+	view.addEventListener('pageShow', function(e) {
+		//进入手执设定界面时
+		if (e.detail.page.id == 'lock') {
+			
+		}
+		console.log(e.detail.page.id + ' show');
+	});
+	view.addEventListener('pageBeforeBack', function(e) {
+		console.log(e.detail.page.id + ' beforeBack');
+	});
+	view.addEventListener('pageBack', function(e) {
+		console.log(e.detail.page.id + ' back');
+	});*/
+		
+})(mui);
+
+
+</script>
+</html>

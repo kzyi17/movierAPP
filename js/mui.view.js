@@ -93,8 +93,8 @@
 		initEvent: function() {
 			this.view.addEventListener('click', this);
 			this.view.addEventListener('tap', this);
-			this.pages.addEventListener('drag', this);
-			this.pages.addEventListener('dragend', this);
+			//this.pages.addEventListener('drag', this);
+			//this.pages.addEventListener('dragend', this);
 			this.pages.addEventListener('webkitTransitionEnd', this);
 		},
 		handleEvent: function(event) {

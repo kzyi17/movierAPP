@@ -52,8 +52,16 @@ var APP_NAME = "影人根据地";
 			}
 
 		});
-		
-		
+	};
+	
+	/**
+	 * 自动登录
+	 * @param {Object} onSuccess
+	 * @param {Object} onError
+	 * @param {Object} retry
+	 */
+	owner.autoLogin = function(onSuccess, onError, retry){
+		console.log('自动登录。。。。。。');
 	};
 	
 	/**
@@ -119,58 +127,55 @@ var APP_NAME = "影人根据地";
 	};
 	
 	
-	
-	
-	
-	
-	
-//////////////////////////////////////////////////////	
-	
-	/**
-	 * 获取当前状态
-	 **/
-	owner.getState = function() {
-		var stateText = localStorage.getItem('$movier_state') || "{}";
-		return JSON.parse(stateText);
-	};
-	
-	/**
-	 * 设置当前状态
-	 **/
-	owner.setState = function(state) {
-		state = state || {};
-		localStorage.setItem('$movier_state', JSON.stringify(state));
-	};
-	
-	/**
-	 * 获取用户ID
-	 * 
-	 */
-	owner.getUserId = function() {
-		var state = owner.getState();
-		var user = state.userInfo || "{}";
-		return user.user_id;
-	};
-	
-	/**
-	 * 注销用户
-	 */
-	owner.clearState = function(state) {
-		state = {};
-		localStorage.setItem('$movier_state', JSON.stringify(state));
-	};
-	
 	/**
 	 * 检查是否登录
+	 * 
+	 * @return boolean
 	 */
 	owner.checkLogin = function(){
-		var state = owner.getState();
-		if(state.userId){
+		var stateText = localStorage.getItem('$state') || "{}";
+		var state = JSON.parse(stateText);
+		if(state.userID){
 			return true;
 		}else{
 			return false;
 		}
 	};
+	
+	/**
+	 * 设置登录状态
+	 * 
+	 * @param 
+	 */
+	owner.setLogin = function(userid,token){
+		var state = {userID:userid};
+		var token = token || {};
+		token.userid = userid;
+		localStorage.setItem('$state', JSON.stringify(state));
+		localStorage.setItem('$token', JSON.stringify(token));
+	};
+	
+	/**
+	 * 退出登录状态
+	 * 
+	 */
+	owner.setLogout = function(){
+		var state = {};
+		var token = {};
+		localStorage.setItem('$state', JSON.stringify(state));
+		localStorage.setItem('$token', JSON.stringify(token));
+	}
+	
+	/**
+	 * 获取userID
+	 * 
+	 * @return String
+	 */
+	owner.getUserID = function(){
+		var stateText = localStorage.getItem('$state') || "{}";
+		var state = JSON.parse(stateText);
+		return state.userID;
+	}
 	
 	/**
 	 * 需要登录权限
@@ -179,11 +184,10 @@ var APP_NAME = "影人根据地";
 	 */
 	owner.loginAuth = function(callback){
 		callback = callback || $.noop;
-		var state = owner.getState();
-		if(state.userId){
+		if(owner.checkLogin()){
 			callback();
 		}else{
-			$.alert('您还未登录,请先登录','影人根据地','确定',function(){
+			$.alert('您还未登录,请先登录',APP_NAME,'确定',function(){
 				$.openWindow({
 					url: 'login.html',
 					id: 'login',
@@ -191,9 +195,129 @@ var APP_NAME = "影人根据地";
 						aniShow: 'slide-in-bottom'
 					}
 				});
+				
 			}); 
 		}
 	};
+	
+	/**
+	 * 打开新页面
+	 * ---登录状态下打开指定窗口
+	 * ---未登录则调用登录窗口，登录完成后回到该窗口
+	 */
+	owner.openWithLogin = function(url,id){
+		if(!url) return;
+		id = id || url;
+		
+		if(owner.checkLogin()){
+			$.openWindow({
+				url: url,
+				id: id,
+			});
+		}else{
+			$.openWindow({
+				url: 'login.html',
+				id: 'login',
+				extras:{targetUrl:url,targetId:id},
+				show: {
+					aniShow: 'slide-in-bottom'
+				}
+			});
+		}
+	};
+	
+	/**
+	 * 保存token
+	 * 
+	 * @param {Object}
+	 */
+	owner.setToken = function(token) {
+		token = token || {};
+		localStorage.setItem('$token', JSON.stringify(token));
+	};	
+	
+	/**
+	 * 获取token
+	 * 
+	 * @return {Object}
+	 */
+	owner.getToken = function() {
+		var tokenText = localStorage.getItem('$token') || "{}";
+		return JSON.parse(tokenText);
+	};
+
+	/**
+	 * 保存用户信息
+	 * 
+	 * @param {Object}
+	 */
+	owner.setUserInfo = function(userInfo) {
+		userInfo = userInfo || {};
+		localStorage.setItem('$userInfo', JSON.stringify(userInfo));
+	};
+	
+	
+	/**
+	 * 获取用户信息
+	 * 
+	 * @return {Object}
+	 */
+	owner.getUserInfo = function() {
+		var userInfoText = localStorage.getItem('$userInfo') || "{}";
+		return JSON.parse(userInfoText);
+	};
+	
+	
+	
+//////////////////////////////////////////////////////	
+	
+//	/**
+//	 * 获取当前状态
+//	 **/
+//	owner.getState = function() {
+//		var stateText = localStorage.getItem('$movier_state') || "{}";
+//		return JSON.parse(stateText);
+//	};
+//	
+//	/**
+//	 * 设置当前状态
+//	 **/
+//	owner.setState = function(state) {
+//		state = state || {};
+//		localStorage.setItem('$movier_state', JSON.stringify(state));
+//	};
+	
+//	/**
+//	 * 获取用户ID
+//	 * 
+//	 */
+//	owner.getUserId = function() {
+//		var state = owner.getState();
+//		var user = state.userInfo || "{}";
+//		return user.user_id;
+//	};
+	
+//	/**
+//	 * 注销用户
+//	 */
+//	owner.clearState = function(state) {
+//		state = {};
+//		localStorage.setItem('$movier_state', JSON.stringify(state));
+//	};
+	
+//	/**
+//	 * 检查是否登录
+//	 */
+//	owner.checkLogin = function(){
+//		var state = owner.getState();
+//		if(state.userId){
+//			return true;
+//		}else{
+//			return false;
+//		}
+//	};
+	
+	
 	
 	
 }(mui, window.App = {}));

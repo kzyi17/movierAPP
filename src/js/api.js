@@ -206,6 +206,16 @@
 	};
 	
 	/**
+	 * 校验短信验证码
+	 * @param {Object} params POST参数
+	 * @param {Object} successCallback 成功回调函数
+	 * @param {Object} errCallback	失败回调函数
+	 */
+	owner.checkSmsCode = function(params,successCallback,errCallback){
+		owner.getApi('public/checkSmsCode',params,successCallback,errCallback);
+	};
+	
+	/**
 	 * 用户注册
 	 * @param {Object} params POST参数
 	 * @param {Object} successCallback 成功回调函数
@@ -233,6 +243,16 @@
 	 */
 	owner.login = function(params,successCallback,errCallback){
 		owner.getApi('User/login',params,successCallback,errCallback);
+	};
+	
+	/**
+	 * 自动登陆
+	 * @param {Object} params POST参数
+	 * @param {Object} successCallback 成功回调函数
+	 * @param {Object} errCallback	失败回调函数
+	 */
+	owner.autoLogin = function(params,successCallback,errCallback){
+		owner.getApi('User/autoLogin',params,successCallback,errCallback);
 	};
 	
 	/**
