@@ -267,57 +267,12 @@ var APP_NAME = "影人根据地";
 		return JSON.parse(userInfoText);
 	};
 	
-	
-	
-//////////////////////////////////////////////////////	
-	
-//	/**
-//	 * 获取当前状态
-//	 **/
-//	owner.getState = function() {
-//		var stateText = localStorage.getItem('$movier_state') || "{}";
-//		return JSON.parse(stateText);
-//	};
-//	
-//	/**
-//	 * 设置当前状态
-//	 **/
-//	owner.setState = function(state) {
-//		state = state || {};
-//		localStorage.setItem('$movier_state', JSON.stringify(state));
-//	};
-	
-//	/**
-//	 * 获取用户ID
-//	 * 
-//	 */
-//	owner.getUserId = function() {
-//		var state = owner.getState();
-//		var user = state.userInfo || "{}";
-//		return user.user_id;
-//	};
-	
-//	/**
-//	 * 注销用户
-//	 */
-//	owner.clearState = function(state) {
-//		state = {};
-//		localStorage.setItem('$movier_state', JSON.stringify(state));
-//	};
-	
-//	/**
-//	 * 检查是否登录
-//	 */
-//	owner.checkLogin = function(){
-//		var state = owner.getState();
-//		if(state.userId){
-//			return true;
-//		}else{
-//			return false;
-//		}
-//	};
-	
-	
-	
+	/**
+	 * 图像缓存
+	 * 
+	 */
+	function imgCache(){
+		
+	}
 	
 }(mui, window.App = {}));

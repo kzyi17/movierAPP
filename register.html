@@ -114,7 +114,6 @@
 				//保存用户信息
 				App.setUserInfo(result.userInfo);
 				App.setLogin(result.userInfo.userid,result.invalid_token); 
-				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
 //				$.toast('注册成功');
 				//下一步跳转
 				$.openWindow({
@@ -130,7 +129,7 @@
 						autoShow: false
 					}
 				});
-				
+				plus.webview.close(plus.webview.currentWebview(),'slide-out-bottom',600);//关闭当前页面
 			},function(result){
 				$.toast(result.errmsg);
 				registerBtn.disabled = false;

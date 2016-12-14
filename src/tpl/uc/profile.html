@@ -1,0 +1,31 @@
+<ul class="mui-table-view mt0">
+	<li class="mui-table-view-cell">
+		<a class="mui-navigate-right" id="btnUserIcon">
+			<span class="input_lable usericon_lable">头像</span>
+			<img id="userIcon" src="images/defaultUserIcon.png" data-lazyload="<%=usericon%>" onload="lazyload(this)" class="mui-pull-right usericon"/>
+		</a>
+	</li>
+	<li class="mui-table-view-cell">
+		<a class="" id="nicknameBtn">
+			<span class="input_lable">昵称</span> 
+			<span class="mui-pull-right input_box input_box_bg" id="nicknameBox"><%=nickname%></span>
+		</a>
+	</li>
+	<li class="mui-table-view-cell"><a class="" id="sexBtn">
+		<span class="input_lable">性别</span> 
+		<span class="mui-pull-right input_box input_box_bg" id="sexBoxText" data="<%=sex%>"><% if(sex=="1"){%>男<%}else{%>女<%}%></span>
+		<input type="hidden" name="sexBox" id="sexBox" value="" />
+	</a></li>
+	<li class="mui-table-view-cell"><a class="" id="jobBtn">
+		<span class="input_lable">职业</span> 
+		<span class="mui-pull-right input_box input_box_bg" id="jobBox"><%=job%></span>
+	</a></li>
+	<li class="mui-table-view-cell"><a class="" id="cityBtn">
+		<span class="input_lable">地区</span> 
+		<span class="mui-pull-right input_box input_box_bg" id="cityBox" data=""><%=province_name%> <%=city_name%> <%=area_name%></span>
+	</a></li>
+</ul>
+<h5 class="mui-content-padded">账户信息<span class="mui-pull-right">暂不支持更改手机号</span></h5>
+<ul class="mui-table-view mt0">
+	<li class="mui-table-view-cell"><span class="input_lable">手机号码</span><span class="mui-pull-right input_box" id="mobileBox"><%=mobile%></span></li>
+</ul>

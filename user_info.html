@@ -40,40 +40,30 @@
     <button class="mui-btn mui-btn-link mui-pull-right" id="saveBtn">保存</button>
 </header>
 <div class="mui-content">
-	
-	<ul class="mui-table-view mt0">
-		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="input_lable usericon_lable">头像</span><img src="images/demo/icon_msg_01.png" class="mui-pull-right usericon"/></a></li>
-		<li class="mui-table-view-cell"><a class="" id="nicknameBtn"><span class="input_lable">昵称</span> <span class="mui-pull-right input_box input_box_bg" id="nicknameBox">木可</span></a></li>
-		<li class="mui-table-view-cell"><a class="" id="sexBtn">
-			<span class="input_lable">性别</span> 
-			<span class="mui-pull-right input_box input_box_bg" id="sexBoxText" data="1">选择您的性别</span>
-			<input type="hidden" name="sexBox" id="sexBox" value="" />
-		</a></li>
-		<li class="mui-table-view-cell"><a class="" id="jobBtn"><span class="input_lable">职业</span> <span class="mui-pull-right input_box input_box_bg" id="jobBox">请选择您的职业</span></a></li>
-		<li class="mui-table-view-cell"><a class="" id="cityBtn"><span class="input_lable">地区</span> <span class="mui-pull-right input_box input_box_bg" id="cityBox" data="">北京 朝阳区</span></a></li>
-	</ul>
-	
-	<h5 class="mui-content-padded">账户信息<span class="mui-pull-right">暂不支持更改手机号</span></h5>
-	
-	<ul class="mui-table-view mt0">
-		<li class="mui-table-view-cell"><span class="input_lable">手机号码</span><span class="mui-pull-right input_box" id="mobileBox">18620081053</span></li>
-	</ul>	
-	
-<script id="userInfoTpl" type="text/html">
-	
-</script>	
+	<tpl id="profile"></tpl> 
 </div>
 <script src="js/mui.min.js"></script>
-<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/api.min.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="tpl/build/template.js" ></script>
+<script src="js/md5.min.js"></script>
+<script src="js/binaryajax.min.js"></script>
+<script src="js/exif.min.js"></script>
+<script src="js/canvasResize.min.js"></script>
+<script src="js/until.min.js"></script>
+<script src="js/app.min.js"></script>
+<script src="js/api.min.js"></script>
+<script src="js/template.min.js"></script>
 <script src="js/mui.picker.min.js"></script>
 <script src="js/mui.poppicker.min.js"></script>
-<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/city.data-3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/city.data-3.min.js"></script>
+<script src="js/data_picker.min.js"></script>
 <script type="text/javascript">
 (function($, doc) {
+	var isModify = false;
+	var fromData ={};
 	function plusReady(){
+		var userInfo = App.getUserInfo();console.log(JSON.stringify(userInfo));
+		document.getElementById('profile').innerHTML = template('uc/profile', userInfo);
+		
+		$.currentWebview.show();
 		plus.nativeUI.closeWaiting();
 		
 		var nicknameBtn = doc.getElementById('nicknameBtn');
@@ -81,7 +71,6 @@
 		var jobBtn = doc.getElementById('jobBtn');
 		var cityBtn = doc.getElementById('cityBtn');
 		var saveBtn = doc.getElementById('saveBtn');
-		
 		var nicknameBox = doc.getElementById('nicknameBox');
 		var sexBox = doc.getElementById('sexBox');
 		var sexBoxText = doc.getElementById('sexBoxText');
@@ -89,35 +78,28 @@
 		var cityBox = doc.getElementById('cityBox');
 		var mobileBox = doc.getElementById('mobileBox');
 		
-		var isModify = false;
+		var userID = App.getUserID();
+	  	fromData.userid = userID;
+	  	fromData.updataType = 'ALL';
 		
-		//获取用户信息
-		var userId = App.getUserID();
-		var param = {user_id:userId};
-		/*Api.getUserInfo(param,function(result){
-			var user = result || {};
-			nicknameBox.innerText = user.nickname;
-			sexBox.value = user.sex;
-			if(user.sex=='0'){
-				sexBoxText.innerText = '女神';
-			}else{
-				sexBoxText.innerText = '男神';
-			}
+		//监听上传图像
+		document.getElementById("btnUserIcon").addEventListener('tap',function(e) {
+			uploadOne(function(imageData){
+				document.getElementById("userIcon").src = imageData;
+				fromData.file = imageData;
+				isModify = true;
+			});
 			
-			mobileBox.innerText = user.mobile;
-			
-			
-			
-			mui.currentWebview.show();
-		});*/
+		}); 
 		
 		//监听按钮-昵称
 		nicknameBtn.addEventListener('tap',function(event){
 			old = nicknameBox.innerText;
 			event.detail.gesture.preventDefault();
-			mui.prompt('请输入您的昵称', old, '影人根据地', ['取消', '确定'], function(e) {
+			mui.prompt('请输入您的昵称', old, APP_NAME, ['取消', '确定'], function(e) {
 				if (e.index == 1 && e.value != "") {
 					nicknameBox.innerText = e.value;
+					fromData.nickname = e.value;
 					isModify = true;
 				}
 			})
@@ -139,47 +121,40 @@
 				var sexSeleted = items[0];
 				sexBox.value = sexSeleted.value;
 				sexBoxText.innerText = sexSeleted.text;
-				//
+				fromData.sex = sexSeleted.value;
 				if(sexSeleted.value != sex_old){
 					isModify = true;
 				}
-				//返回 false 可以阻止选择框的关闭
-				//return false;
 			});
 		}, false);
-		
 		
 		//监听按钮-职业
+		var jobPicker = new $.PopPicker();
+		jobPicker.setData(eventJobData);
 		jobBtn.addEventListener('tap',function(event){
-			event.detail.gesture.preventDefault();
-			mui.prompt('请输入您的职业', jobBox.innerText, '影人根据地', ['取消', '确定'], function(e) {
-				if (e.index == 1) {
-					jobBox.innerText = e.value;
-					//console.log();
-				}
-			})
+			jobPicker.pickers[0].setSelectedValue(userInfo.job_id);
+			jobPicker.show(function(items) {
+				fromData.job = items[0].value;
+				jobBox.innerText = (items[0] || {}).text;
+			});
 		},false);
 		
-		
 		//监听按钮-地区
-		var cityPicker = new $.PopPicker({
-			layer: 3
-		});
+		var cityPicker = new $.PopPicker({layer: 3});
 		cityPicker.setData(cityData3);
-		var showCityPickerButton = doc.getElementById('showCityPicker3');
-		cityBtn.addEventListener('tap', function(event) {
-//			cityPicker.pickers[0].setSelectedValue('440000');
-//			cityPicker.pickers[1].setSelectedValue('1');
-//			cityPicker.pickers[1].setSelectedValue('1');
+		cityPicker.pickers[0].setSelectedValue(userInfo.province_id);
+		cityPicker.pickers[1].setSelectedValue(userInfo.city_id);
+		cityPicker.pickers[2].setSelectedValue(userInfo.area_id);
+		cityBtn.addEventListener('tap',function(e){
 			cityPicker.show(function(items) {
+				fromData.province_id = (items[0] || {}).value;
+				fromData.city_id = (items[1] || {}).value;
+				fromData.area_id = (items[2] || {}).value;
 				cityBox.innerText = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
-				console.log(JSON.stringify(items[0]));
-				console.log(JSON.stringify(items[1]));
-				console.log(JSON.stringify(items[2]));
-				//返回 false 可以阻止选择框的关闭
-				//return false;
+				isModify = true;
 			});
-		}, false);
+		},false);
+		
 		
 		//监听按钮-保存设置
 		saveBtn.addEventListener('tap',function(event){
@@ -188,34 +163,16 @@
 			}else{
 				$.confirm('您确定保存设置吗？','影人根据地',['确定保存','返回修改'],function(e){
 					if (e.index == 0) {
-						var updataInfo = {};
-						updataInfo.user_id = userId;
-						updataInfo.nickname = nicknameBox.innerText;
-						updataInfo.sex = sexBox.value;
-						
-						console.log(JSON.stringify(updataInfo));
-						//保存资料
-						Api.updateInfo(updataInfo,function(result){
-							isModify = false;
-							
-							//保存用户信息
-							state = {}; 
-							state.userId = result.userInfo.user_id;
-							state.userInfo = result.userInfo;
-							App.setState(state);
-							
+						console.log(JSON.stringify(fromData));//return;
+						Api.updateInfo(fromData,function(result){
+							App.setUserInfo(result.userInfo);
 							var ws = plus.webview.currentWebview();//获取当前窗体
 							ws.opener().reload();//刷新上一个窗体
 							plus.webview.close(ws,'slide-out-bottom',600);//关闭当前页面
-							
 							$.toast('修改资料成功');
-							
 						},function(result){
-							//console.log(JSON.stringify(result));
 							alert(result.errmsg);
 						});
-						
-						//$.toast('正在开发中..');
 					} 
 				});
 			}
@@ -236,6 +193,7 @@
 				});
 			}
 		}
+		
 		
 	}
 	if(window.plus){

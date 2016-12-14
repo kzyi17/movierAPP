@@ -5,7 +5,7 @@
 (function($, owner) {
 	var debug = true; // 调试模式
 	var ServerDomainRoot = "http://192.168.1.5/movierAPI/";//接口服务器地址
-	//var ServerDomainRoot = "http://120.24.249.120/movier/api/";//接口服务器地址
+//	var ServerDomainRoot = "http://120.24.249.120/movier/api/";//接口服务器地址
 	//var ServerDomainRoot = "http://172.24.65.1/movier/api/";//接口服务器地址
 	
 	/** 

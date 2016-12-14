@@ -17,10 +17,7 @@
     <h1 class="mui-title">我的</h1>
 </header>
 <div class="mui-content">
-	<tpl id="userInfo">
-		
-	</tpl>
-	
+	<tpl id="userInfo"></tpl>
 	<ul class="mui-table-view mt10">
 		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我的钱包<span class="mui-pull-right accountinfo">现金余额 0.00元</span></a></li>
 		<li class="mui-table-view-cell"><a class="mui-navigate-right"><span class="mui-icon mui-icon-arrowdown"></span>我预约的</a></li>
@@ -49,49 +46,37 @@
 	<br /><br /><br /><br />
 </div>
 <script src="js/mui.min.js"></script>
-<script src="js/app.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/md5.min.js"></script>
+<script src="js/until.min.js"></script>
+<script src="js/app.min.js"></script>
+<script src="js/mui.zoom.min.js"></script>
+<script src="js/mui.previewimage.min.js"></script>
 <script src="js/template.min.js"></script>
 <script type="text/javascript">
-	window.onload = function(){
+(function($) {
+	$.previewImage();
+	$.plusReady(function(){
+		var userInfo = App.getUserInfo();//console.log(JSON.stringify(userInfo));
+		document.getElementById('userInfo').innerHTML = template('uc/userInfo', userInfo);
+		//监听按钮 - 我的资料
+		document.getElementById('userInfo').addEventListener('tap', function(event) {
+			$.openWindow({
+				url: 'user_info.html',
+				id: 'user_info',
+				show: {
+					aniShow: 'pop-in',
+					autoShow:false
+				},
+				waiting: {
+					autoShow: true,
+					title:'正在玩命加载...',
+				}
+			});
+		}, false);
 		
-		//mui.init();
-	    //从服务器获取数据
-	    //业务数据获取完毕，并已插入当前页面DOM；
-	    //注意：若为ajax请求，则需将如下代码放在处理完ajax响应数据之后；
-		mui.plusReady(function(){
-	    	//关闭等待框
-			plus.nativeUI.closeWaiting();
-			
-	    	//TEST
-	    	//test();
-			  
-			var userInfo = App.getUserInfo();
-			var html = template('userInfo', {user:userInfo});
-			document.getElementById('userInfo').innerHTML = html;
-			//console.log(JSON.stringify(state));
-			  
-	    	mui.currentWebview.show();
-	    	
-	    	
-	    	//监听按钮 - 我的资料
-			document.getElementById('myinfo').addEventListener('tap', function(event) {
-				mui.openWindow({
-					url: 'user_info.html',
-					id: 'user_info',
-					show: {
-						aniShow: 'pop-in',
-						autoShow:false
-					},
-					waiting: {
-						autoShow: true,
-						title:'正在玩命加载...',
-					}
-				});
-			}, false);
-			
-	  	});
-	}
+	});
 	
+
 	//监听按钮 - 修改密码
 	document.getElementById('btn_modifypwd').addEventListener('tap', function(event) {
 		mui.openWindow({
@@ -103,16 +88,16 @@
 			}
 		});
 	}, false);
-	
 	//退出登录
 	document.getElementById('btn_quit').addEventListener('tap', function(event) {
-		mui.confirm('是否退出当前账号','影人根据地',['取消','退出'],function(e) {
+		$.confirm('是否退出当前账号',APP_NAME,['取消','退出'],function(e) {
 			if (e.index == 1) {
 				App.setLogout();
 				mui.back();
 			} 
 		});  
 	}, false);
+}(mui));  	
 	
 	function test(){
 		console.log('Test:start------------------------------------>');
