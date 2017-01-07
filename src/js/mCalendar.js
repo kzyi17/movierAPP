@@ -219,44 +219,6 @@
 		var cell_selected;
 		var date_selected;
 		
-		
-		
-		
-		
-		var changeDate = function(date){
-		  	date && date.setHours(0,0,0,0);
-		  	
-		  	if(cell_selected){
-		  		var index = 1*cell_selected.getAttribute("mcweek-cell-index") + $.DateUtil.getDateDiff(date_selected, date);
-		  		cell_selected = content.childNodes[index];
-		  		
-		  		
-		  	}else{
-		  		var index = $.DateUtil.getDateDiff(date_selected, date);
-		  		cell_selected = content.childNodes[index];
-		  		
-		  		console.log('bb');
-		  	}
-		  	
-		  	//console.log(cell_selected);
-		  	
-//		  	if(cell_selected){
-//				$.removeClass(cell_selected,"mc-cell-selected");
-//				if(date_selected.getFullYear() == date.getFullYear()
-//				   && date_selected.getMonth() == date.getMonth()){
-//					var index = 1*cell_selected.getAttribute("mc-cell-index") + $.DateUtil.getDateDiff(date_selected, date);
-//			   		cell_selected = content.childNodes[index];
-//			   	  	$.addClass(cell_selected,"mc-cell-selected");
-//			   	  	date_selected = date;
-//			    }else{
-//					changeMonth(date);
-//				}
-//			}else{
-//				changeMonth(date);
-//			}
-		  	
-		};
-		
 		//渲染
 		var renderSkelekon = function(container,date,row){
 			date && date.setHours(0,0,0,0);
@@ -284,32 +246,42 @@
 			}
 		};
 		
+		var changeDate = function(date){
+		  	date && date.setHours(0,0,0,0);
+		  	
+		  	if(date_selected&&cell_selected){
+		  		$.removeClass(cell_selected,"mWeek-cell-selected");
+		  		var index = $.DateUtil.getDateDiff(date_selected, date);
+		  		cell_selected = content.childNodes[index];
+		  		$.addClass(cell_selected,'mWeek-cell-selected');
+		  	}else{
+				var index = $.DateUtil.getDateDiff(date_selected, date);
+				cell_selected = content.childNodes[index];
+				$.addClass(cell_selected,'mWeek-cell-selected mui-active');
+		  	}
+		  	
+		};
 		
 		return{
 			init: function(o){
+				date_start = o.date || $.DateUtil.getToday();
 				//渲染视图
-				renderSkelekon(o.container,o.date,o.row);
+				renderSkelekon(o.container,date_start,o.row);
+				date_selected = date_start;
+				changeDate(o.date_selected || date_start);
 				
-				//默认第一个元素为选中状态
-				date_selected = o.date || $.DateUtil.getToday();
-				cell_selected = content.firstChild;
-				$.addClass(content.firstChild,'mui-active mWeek-cell-selected');
-				
-				
-				//console.log(JSON.stringify(date_selected));return;
-				//this.changeDate(o.date || $.DateUtil.getToday());
-				
-				/*
 				for(var i = content.childNodes.length - 1; i >= 0; i--){
 					child = content.childNodes[i];
 					child.addEventListener(evt.type,function(e){
 						var idx = this.getAttribute("mcweek-cell-index");
-						var dateObj = $.DateUtil.addDate(o.date || $.DateUtil.getToday(),idx)
-						o.fn(dateObj);
-						changeDate(dateObj);
+						var dateObj = $.DateUtil.addDate(date_start,idx);
+						if(!$.hasClass(this,"mWeek-cell-selected")){
+							changeDate(dateObj);
+							o.fn(dateObj);
+						}
 					},false);
 				}
-				*/
+				
 			},
 			changeDate:changeDate,
 		}
@@ -319,10 +291,11 @@
 	$.fn.MWeek = function(option){
 		//默认配置
 		var options = {
-			container : this[0],
-			date:$.DateUtil.getToday(),
-			row:7,
-			fn:function(){},
+			container : this[0],			//
+			date:undefined,					//开始日期
+			date_selected:undefined,		//默认选中日期
+			row:7,							//显示单位
+			fn:function(){},				//点击回调函数
 		};
 		//合并配置
 		$.extend(options, option||{});
